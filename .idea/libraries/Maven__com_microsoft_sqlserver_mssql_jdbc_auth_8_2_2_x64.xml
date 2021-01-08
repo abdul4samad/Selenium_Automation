@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Maven: com.microsoft.sqlserver:mssql-jdbc_auth:8.2.2.x64">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/com/microsoft/sqlserver/mssql-jdbc_auth/8.2.2.x64/mssql-jdbc_auth-8.2.2.x64.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$MAVEN_REPOSITORY$/com/microsoft/sqlserver/mssql-jdbc_auth/8.2.2.x64/mssql-jdbc_auth-8.2.2.x64-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$MAVEN_REPOSITORY$/com/microsoft/sqlserver/mssql-jdbc_auth/8.2.2.x64/mssql-jdbc_auth-8.2.2.x64-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>
