@@ -94,7 +94,7 @@ public class AamirKaKam4 {
             writeInNotePad("issue with data:"+data);
         }
     }
-        static String fileName = "LinkDetails.txt";
+        static String fileName = "Output.txt";
         public static void writeInNotePad (String text){
 
             try {

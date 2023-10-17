@@ -23,7 +23,7 @@ public class AamirKaKam7 {
         String data="";
         try {
 
-            FileReader fr = new FileReader(new File("LinkDetails.txt"));
+            FileReader fr = new FileReader(new File("Output.txt"));
             BufferedReader br = new BufferedReader(fr);
             data = br.readLine();
             String array[] = data.split("-->");
@@ -39,7 +39,7 @@ public class AamirKaKam7 {
             System.out.println("dfdsfsdfsdfsdf");
         }
     }
-        static String fileName = "LinkDetails.txt";
+        static String fileName = "Output.txt";
         public static void writeInNotePad (String text){
 
             try {
