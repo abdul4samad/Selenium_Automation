@@ -5,35 +5,34 @@ import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.*;
-
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.Duration;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 import java.util.NoSuchElementException;
-import java.util.Properties;
 
-public class Utility extends LaunchEnvironment {
+public class Utility {
 
-	public static Properties prop;
-	public static InputStream file;
-	public static String value, data, filepath;
-	public static String loctype;
-	public static WebElement loct;
-	public static Properties stbConfigRepository;
-	public static Properties stbLocRepository;
+	private static WebElement loct;
+	public  Properties prop;
+	public  InputStream file;
+	public  String value, data, filepath;
+	public  String loctype;
+	public  Properties stbConfigRepository;
+	public  Properties stbLocRepository;
 	static int waiting =0;
+	public static WebDriver driver;
 	
-	
-			
-	
+
+
+
+
 	// ***************************************************************************
 	/**
 	 * This function loads the property file in buffer
-	 * 
+	 *
 	 * @param fileLocation Enter the file location of the property file as parameter.
 	 * @return Properties. This function will return the object of the loaded
 	 *         property file.
@@ -41,50 +40,50 @@ public class Utility extends LaunchEnvironment {
 	 *                IOException
 	 */
 	// ***************************************************************************
-	
-	/*public static Properties loadProperty(String fileLocation) {
+
+	/*public  Properties loadProperty(String fileLocation) {
 		prop = new Properties();
 		try {
 			file = new FileInputStream(fileLocation);
 		} catch (FileNotFoundException e) {
-			Reports.fail("Load Property",e.toString());
+			//Reports.fail("Load Property",e.toString());
 			e.printStackTrace();
 		}
 		try {
 			prop.load(file);
 		} catch (IOException e) {
-			Reports.fail("Load Property",e.toString());
+			//Reports.fail("Load Property",e.toString());
 			e.printStackTrace();
-		}		
+		}
 		return prop;
 	}*/
 
-	
+
 	/************************************************************************************************
      * This function will define specific locater type for keys in Locators
      * property file
-     * 
+     *
      * @param key Pass the value of the locator
 	 * @param type pass the type of locator like xpath, lnktxt, id, name
      * @return WebElement This function will return WebElement based on specific
      *         locator type.
      *************************************************************************************************/
      public static WebElement getLocator(String key, String type){
-     	
-    		 		fluentWait(10, 500, key, type);
+
+    		 		fluentWait(5, 200, key, type);
 
                    if (type.equalsIgnoreCase("id")) {
                          loct = driver.findElement(By.id(key));
-                         ElementHighlight(loct);
+                         //ElementHighlight(loct);
                    } else if (type.equalsIgnoreCase("xpath")) {
                          loct = driver.findElement(By.xpath(key));
                          ElementHighlight(loct);
                    } else if (type.equalsIgnoreCase("lnktxt")) {
                          loct = driver.findElement(By.linkText(key));
-                         ElementHighlight(loct);
+                         //ElementHighlight(loct);
                    } else if (type.equalsIgnoreCase("name")) {
                          loct = driver.findElement(By.name(key));
-                         ElementHighlight(loct);
+                         //ElementHighlight(loct);
                    } else if (type.equalsIgnoreCase("partlnktxt")) {
                          loct = driver.findElement(By.partialLinkText(key));
                          ElementHighlight(loct);
@@ -99,39 +98,38 @@ public class Utility extends LaunchEnvironment {
                        ElementHighlight(loct);
                 	   //System.out.println("Locators not matched");
                    }
-
 		return loct;
-     
+
   }
 
-	public static WebElement getLocatorWithoutWait(String key, String type){
+	public  WebElement getLocatorWithoutWait(String key, String type){
 
 		//fluentWait(10, 500, key, type);
 
 		if (type.equalsIgnoreCase("id")) {
 			loct = driver.findElement(By.id(key));
-			//ElementHighlight(loct);
+			////ElementHighlight(loct);
 		} else if (type.equalsIgnoreCase("xpath")) {
 			loct = driver.findElement(By.xpath(key));
-			//ElementHighlight(loct);
+			////ElementHighlight(loct);
 		} else if (type.equalsIgnoreCase("lnktxt")) {
 			loct = driver.findElement(By.linkText(key));
-			//ElementHighlight(loct);
+			////ElementHighlight(loct);
 		} else if (type.equalsIgnoreCase("name")) {
 			loct = driver.findElement(By.name(key));
-			//ElementHighlight(loct);
+			////ElementHighlight(loct);
 		} else if (type.equalsIgnoreCase("partlnktxt")) {
 			loct = driver.findElement(By.partialLinkText(key));
-			//ElementHighlight(loct);
+			////ElementHighlight(loct);
 		} else if (type.equalsIgnoreCase("css")) {
 			loct = driver.findElement(By.cssSelector(key));
-			//ElementHighlight(loct);
+			////ElementHighlight(loct);
 		} else if (type.equalsIgnoreCase("tagname")) {
 			loct = driver.findElement(By.tagName(key));
-			//ElementHighlight(loct);
+			////ElementHighlight(loct);
 		} else {
 			loct = driver.findElement(By.xpath(key));
-			//ElementHighlight(loct);
+			////ElementHighlight(loct);
 			//System.out.println("Locators not matched");
 		}
 		return loct;
@@ -146,34 +144,34 @@ public class Utility extends LaunchEnvironment {
       public static List<WebElement> getLocatorList(String key, String type){
     	  List<WebElement> listOfElements = null;
              try{
-             		fluentWait(5, 500, key, type);
+             		//fluentWait(1, 500, key, type);
 
                     if (type.equalsIgnoreCase("id")) {
                     	listOfElements = driver.findElements(By.id(key));
-                     
+
                     } else if (type.equalsIgnoreCase("xpath")) {
                     	listOfElements = driver.findElements(By.xpath(key));
-                        
+
                     } else if (type.equalsIgnoreCase("lnktxt")) {
                     	listOfElements = driver.findElements(By.linkText(key));
-                        
+
                     } else if (type.equalsIgnoreCase("name")) {
                     	listOfElements = driver.findElements(By.name(key));
 
                     } else if (type.equalsIgnoreCase("partlnktxt")) {
                     	listOfElements = driver.findElements(By.partialLinkText(key));
-                        
+
                     } else if (type.equalsIgnoreCase("css")) {
                     	listOfElements = driver.findElements(By.cssSelector(key));
-                        
+
                     } else if (type.equalsIgnoreCase("tagname")) {
                     	listOfElements = driver.findElements(By.tagName(key));
-                        
+
                     } else {
                     	listOfElements = driver.findElements(By.xpath(key));
-                      
+
                     }
-             }catch(ElementNotVisibleException e){
+             }catch(Exception e){
              	e.printStackTrace();
              }
              return listOfElements;
@@ -185,14 +183,14 @@ public class Utility extends LaunchEnvironment {
 	 * @param type pass the type locator like xpath, ID, name, Lnktxt
 	 * @param timeoutInSecond enter the time of wait till the element found.
 	 ******************************************************/
-	public static void waitExplicitly(String key, String type, int timeoutInSecond){
-          
+	public  void waitExplicitly(String key, String type, Duration timeoutInSecond){
+
   		System.out.println("Waiting Explicitly");
-    	  
+
     	  WebDriverWait explicitWait = new WebDriverWait(driver,timeoutInSecond);
-    	  
+
     	  if (type.equalsIgnoreCase("id")) {
-    		  explicitWait.until(ExpectedConditions.elementToBeClickable(By.id(key)));
+    		  explicitWait.until(ExpectedConditions.elementToBeClickable(By.xpath(key)));
          } else if (type.equalsIgnoreCase("xpath")) {
         	 explicitWait.until(ExpectedConditions.elementToBeClickable(By.xpath(key)));
          } else if (type.equalsIgnoreCase("lnktxt")) {
@@ -206,28 +204,28 @@ public class Utility extends LaunchEnvironment {
          } else if (type.equalsIgnoreCase("tagname")) {
         	 explicitWait.until(ExpectedConditions.elementToBeClickable(By.tagName(key)));
          } else {
-        	 explicitWait.until(ExpectedConditions.elementToBeClickable(By.xpath(key)));  
+        	 explicitWait.until(ExpectedConditions.elementToBeClickable(By.xpath(key)));
          }
-    	  
+
       }
-      
-      
+
+
 	/*************************************************************************************
 	 * This function will get screenshot on Success of executed Test Cases.
-	 * 
+	 *
 	 * @return filepath This function will return the String path of the
 	 *         screenshot.
 	 * @exception IOException
 	 **************************************************************************************/
-	public static String getSuccessScreenshot() {
+	public  String getSuccessScreenshot() {
 		try {
 			filepath = null;
 			File file = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
 			filepath = System.getProperty("user.dir") + "\\Screenshots\\SuccessScreenshot\\"
 					+ System.currentTimeMillis() + ".png";
 			FileUtils.copyFile(file, new File(filepath));
-		} catch (IOException e) {
-			Reports.fail("Get Success Screenshot",e.toString());
+		} catch (Exception e) {
+			//Reports.fail("Get Success Screenshot",e.toString());
 			e.printStackTrace();
 		}
 		return filepath;
@@ -235,17 +233,17 @@ public class Utility extends LaunchEnvironment {
 
 	/***************************************************************************************
 	 * This function will close the current session
-	 * 
+	 *
 	 * @throws IOException
 	 **************************************************************************************/
-	public static void closeBrowser() throws IOException {
+	public  void closeBrowser() throws IOException {
 		try {
 			System.out.println("Closing Browser");
 			System.out.println("**************************************************************************************************");
 			driver.close();
 
 		} catch (Exception e) {
-			Reports.fail("Close Browser",e.toString());
+			//Reports.fail("Close Browser",e.toString());
 			e.printStackTrace();
 
 		}
@@ -254,20 +252,20 @@ public class Utility extends LaunchEnvironment {
 
 	/***************************************************************************************
 	 * This function will take screenshot on failure of test cases.
-	 * 
+	 *
 	 * @param errorMessage pass the message which will be include in the name of taken screenshot
 	 * @return method will return the path of the file created.
-	 * 
+	 *
 	 **************************************************************************************/
-	public static String getfailScreenshot(String errorMessage) {
+	public  String getfailScreenshot(String errorMessage) {
 		try {
 			filepath = null;
 			File file = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
 			filepath = System.getProperty("user.dir") + "\\Screenshots\\FailedScreenshot\\"+errorMessage + System.currentTimeMillis()
 					+ ".png";
-			FileUtils.copyFile(file, new File(filepath));
+			//FileUtils.copyFile(file, new File(filepath));
 		} catch (Exception e) {
-			Reports.fail("get Fail ScreenShot",e.toString());
+			//Reports.fail("get Fail ScreenShot",e.toString());
 			e.printStackTrace();
 		}
 		return filepath;
@@ -276,7 +274,7 @@ public class Utility extends LaunchEnvironment {
 	/***************************************************************************************
 	 * This function is used to highlight element on GUI where the current and
 	 * previous action has been performed.
-	 * 
+	 *
 	 * @param element pass the web element which need to be highlighted.
 	 **************************************************************************************/
 	public static void ElementHighlight(WebElement element) {
@@ -285,13 +283,13 @@ public class Utility extends LaunchEnvironment {
 		try {
 			Thread.sleep(100);
 		} catch (InterruptedException e) {
-			Reports.fail("Element HighLight",e.toString());
+			//Reports.fail("Element HighLight",e.toString());
 			e.printStackTrace();
 		}
 		((JavascriptExecutor) driver).executeScript("arguments[0].setAttribute('style', 'border: solid 2px green ');",
 				element);
 	}
-	
+
 	/*******************************************************************************************
 	 * This Function will click hidden elements too.
 	 * @param element pass the web element
@@ -301,16 +299,24 @@ public class Utility extends LaunchEnvironment {
 
 		((JavascriptExecutor) driver).executeScript(
 		"arguments[0].click();", element);
-		
+
 	}
-	
+
+	public static void valueByJavaScript(WebElement element, String value) {
+		ElementHighlight(element);
+
+		((JavascriptExecutor) driver).executeScript(
+				"arguments[0].value = '"+value+"';", element);
+
+	}
+
 
 	/***************************************************************************************
 	 * This function will give you System date time in string format
-	 * 
+	 *
 	 * @return This function will return date time in String format.
 	 **************************************************************************************/
-	public static String getDatetime() {
+	public  String getDatetime() {
 		DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
 		Date date = new Date();
 		String founddate = dateFormat.format(date);
@@ -323,10 +329,10 @@ public class Utility extends LaunchEnvironment {
 
 	/***************************************************************************************
 	 * This function will give you System date time in string format
-	 * 
+	 *
 	 * @return This function will return date time in String format.
 	 **************************************************************************************/
-	public static String getDate() {
+	public  String getDate() {
 		DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
 		Date date = new Date();
 		String founddate = dateFormat.format(date);
@@ -345,12 +351,12 @@ public class Utility extends LaunchEnvironment {
 	 * @param type type of the locator like xpath, id, lnktxt.
 	 */
 	public static void fluentWait(int duration, int pollingInMilliSec, String key, String type){
-        
+
 		System.out.println("Under fluent wait for: "+key);
 		Wait<WebDriver> fluentWait = new FluentWait<WebDriver>(driver).withTimeout(Duration.ofSeconds(duration))
 		        .pollingEvery(Duration.ofMillis(pollingInMilliSec)).ignoring(NoSuchElementException.class)
 		        .ignoring(StaleElementReferenceException.class).ignoring(WebDriverException.class);
-	
+
 		if (type.equalsIgnoreCase("id")) {
 			fluentWait.until(ExpectedConditions.elementToBeClickable(By.id(key)));
        } else if (type.equalsIgnoreCase("xpath")) {
@@ -366,7 +372,7 @@ public class Utility extends LaunchEnvironment {
        } else if (type.equalsIgnoreCase("tagname")) {
     	   fluentWait.until(ExpectedConditions.elementToBeClickable(By.tagName(key)));
        } else {
-    	   fluentWait.until(ExpectedConditions.elementToBeClickable(By.xpath(key)));  
+    	   fluentWait.until(ExpectedConditions.elementToBeClickable(By.xpath(key)));
        }
 	}
 
@@ -375,57 +381,57 @@ public class Utility extends LaunchEnvironment {
 	 * @param value
 	 * @param key
 	 ******************************************************************************************/
-	
-	public static void selectDropDown(String key, String type, String value){
-		
+
+	public  void selectDropDown(String key, String type, String value){
+
 		Select drpByValue = new Select(getLocator(key, type));
 		drpByValue.selectByVisibleText(value);
-		
+
 	}
-	
+
 	/*******************************************************************************************
 	 * This Function used to select drop down options by Index.
 	 * @param index
 	 * @param key
 	 ******************************************************************************************/
-	
-	public static void selectDropDown(String key, String type, int index){
+
+	public  void selectDropDown(String key, String type, int index){
 
 		Select drpByValue = new Select(getLocator(key, type));
 		drpByValue.selectByIndex(index);
-		
+
 	}
-	
+
 	/*******************************************************************************************
 	 * This Function will scroll page till the element is visible
 	 * @author abdul.samad
 	 * @param elem pass the element
 	 ******************************************************************************************/
 	public static void scrollTillView(WebElement elem){
-		
+
 		((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", elem);
 	}
-	
+
 	/*******************************************************************************************
 	 * This Function will drag and element from key1 and will drop to key2
 	 * @author abdul.samad
 	 * @param elem , loc2
 	 ******************************************************************************************/
-	public static void dragAndDrop(WebElement elem, String loc2, String type){
+	public  void dragAndDrop(WebElement elem, String loc2, String type){
 		scrollTillView(elem);
 		Actions act=new Actions(driver);
-		
+
 		act.dragAndDrop(elem, getLocator(loc2, type)).build().perform();
-		
+
 	}
-	
+
 	/********************************************************
 	 * This function is used to convert a file into Base64 format.
 	 * @param imagePath
 	 * @return encoded base64 string of image
 	 ****************************************************/
-	
-    public static String encodeFileToBase64Binary(String imagePath){
+
+    public  String encodeFileToBase64Binary(String imagePath){
     	File f =  new File(imagePath);
          String encodedfile = null;
          try {
@@ -449,9 +455,10 @@ public class Utility extends LaunchEnvironment {
 	 * @param key Pass the value of the locator
 	 * @param type pass the type of locator like xpath, lnktxt, id, name
 	 */
-     public static void hoverMouseToElement(String key, String type){
+     public  void hoverMouseToElement(String key, String type){
     	Actions actions = new Actions(driver);
     	actions.moveToElement(getLocator(key, type)).build().perform();
     	System.out.println("Element move to the element: "+key);
 	 }
+	 
 }

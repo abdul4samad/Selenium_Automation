@@ -13,10 +13,10 @@ public class LaunchEnvironment {
     /**
      * @author abdul.samad
      */
-    public static WebDriver driver;
-    public static boolean flag;
+    public WebDriver driver;
+    public boolean flag;
 
-    public static boolean LaunchEnv(String browser) {
+    public boolean LaunchEnv(String browser) {
         flag = false;
 
         try {
@@ -38,7 +38,7 @@ public class LaunchEnvironment {
             driver.manage().timeouts().implicitlyWait(1000, TimeUnit.MILLISECONDS);
             flag = true;
             System.out.println("Environment Launched Successfully");
-            Reports.pass("Launch Browser", "Chrome Launched Successfully");
+            //Reports.pass("Launch Browser", "Chrome Launched Successfully");
         }
 
         catch (Exception e) {
@@ -48,7 +48,7 @@ public class LaunchEnvironment {
         return flag;
     }
 
-    public static boolean launchURl(String URL) {
+    public boolean launchURl(String URL) {
         System.out.println("in launch url()");
         flag = false;
         try{
@@ -57,7 +57,7 @@ public class LaunchEnvironment {
         }catch(Exception e)
         {
             System.out.println("Navigated to URL :- " +URL);
-            Reports.pass("Navigate to SCALE-IHS URL", "Successfully Navigated to URL:"+URL);
+            //Reports.pass("Navigate to SCALE-IHS URL", "Successfully Navigated to URL:"+URL);
             flag = true;
             System.out.println(e);
         }

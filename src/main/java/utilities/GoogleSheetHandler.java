@@ -27,14 +27,14 @@ import java.util.List;
 
 public class GoogleSheetHandler {
 
-    private static String APPLICATION_NAME = "Quickstart";
-    private static JsonFactory JSON_FACTORY = JacksonFactory.getDefaultInstance();
-    private static String TOKENS_DIRECTORY_PATH = "tokens";
-    private static List<String> SCOPES = Collections.singletonList(SheetsScopes.SPREADSHEETS);
-    private static String CREDENTIALS_FILE_PATH = "/client_id.json";
+    private static final String APPLICATION_NAME = "Quickstart";
+    private static final JsonFactory JSON_FACTORY = JacksonFactory.getDefaultInstance();
+    private static final String TOKENS_DIRECTORY_PATH = "tokens";
+    private static final List<String> SCOPES = Collections.singletonList(SheetsScopes.SPREADSHEETS);
+    private static final String CREDENTIALS_FILE_PATH = "/client_id.json";
     public static List<Sheet> workBook;
     public static Sheets.Spreadsheets spreadsheets;
-    private static String alphabets = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    private static final String alphabets = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
     public static int columnCount = 0;
     public static int rowCount = 0;
 

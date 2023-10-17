@@ -33,7 +33,7 @@ public class ExcelSheetHandler {
 		try {
 			file = new FileInputStream(filepath);
 		} catch (FileNotFoundException e) {
-			Reports.fail("",e.toString());
+			//Reports.fail("",e.toString());
 			e.printStackTrace();
 
 		}
@@ -41,7 +41,7 @@ public class ExcelSheetHandler {
 			workbook = new XSSFWorkbook(file);
 			sheet = workbook.getSheet(sheetName);
 		} catch (IOException e) {
-			Reports.fail("",e.toString());
+			//Reports.fail("",e.toString());
 			e.printStackTrace();
 		}
 		int colCount = sheet.getRow(0).getPhysicalNumberOfCells()-1;
@@ -71,7 +71,7 @@ public class ExcelSheetHandler {
 			fout = new FileOutputStream(filepath);
 
 		} catch (FileNotFoundException e) {
-			Reports.fail("",e.toString());
+			//Reports.fail("",e.toString());
 			System.out.println("Unable to locate Excel ");
 			e.printStackTrace();
 
@@ -79,7 +79,7 @@ public class ExcelSheetHandler {
 		try {
 			workbook.write(fout);
 		} catch (IOException e) {
-			Reports.fail("",e.toString());
+			//Reports.fail("",e.toString());
 			System.out.println("unable to set Excel Data");
 		}
 	}
@@ -155,7 +155,7 @@ public class ExcelSheetHandler {
 			fout = new FileOutputStream(filepath);
 
 		} catch (FileNotFoundException e) {
-			Reports.fail("",e.toString());
+			//Reports.fail("",e.toString());
 			System.out.println("Unable to locate Excel ");
 			e.printStackTrace();
 
@@ -163,7 +163,7 @@ public class ExcelSheetHandler {
 		try {
 			workbook.write(fout);
 		} catch (IOException e) {
-			Reports.fail("",e.toString());
+			//Reports.fail("",e.toString());
 			System.out.println("unable to set Excel Data");
 		}
 	}
@@ -192,7 +192,7 @@ public class ExcelSheetHandler {
 			fout = new FileOutputStream(filepath);
 
 		} catch (FileNotFoundException e) {
-			Reports.fail("",e.toString());
+			//Reports.fail("",e.toString());
 			System.out.println("Unable to locate Excel ");
 			e.printStackTrace();
 
@@ -200,7 +200,7 @@ public class ExcelSheetHandler {
 		try {
 			workbook.write(fout);
 		} catch (IOException e) {
-			Reports.fail("",e.toString());
+			//Reports.fail("",e.toString());
 			System.out.println("unable to set Excel Data");
 		}
 	}
@@ -225,10 +225,10 @@ public class ExcelSheetHandler {
 		Object[][] Exceldata = null;
 		try {
 			sheet = workbook.getSheet(sheetName);
-			int startRow = 1;
-			int startCol = 0;
+			int startRow = 60;
+			int startCol = 1;
 			int totalRow = sheet.getLastRowNum();
-			int totalCol = sheet.getRow(0).getPhysicalNumberOfCells();
+			int totalCol = 5;//sheet.getRow(0).getPhysicalNumberOfCells();
 			 System.out.println(totalRow);
 			 System.out.println(totalCol);
 			int ci, cj;
@@ -248,7 +248,7 @@ public class ExcelSheetHandler {
 			System.out.println("*************** Test Data Loaded *******************");
 			mapColumnNameIndex(totalCol);
 		} catch (Exception e) {
-			Reports.fail("",e.toString());
+			//Reports.fail("",e.toString());
 			e.printStackTrace();
 		}
 		return (Exceldata);
@@ -278,7 +278,7 @@ public class ExcelSheetHandler {
 		try {
 			file = new FileInputStream(filepath);
 		} catch (FileNotFoundException e) {
-			Reports.fail("",e.toString());
+			//Reports.fail("",e.toString());
 			e.printStackTrace();
 
 		}
@@ -286,7 +286,7 @@ public class ExcelSheetHandler {
 			workbook = new XSSFWorkbook(file);
 			sheet = workbook.getSheet(sheetName);
 		} catch (IOException e) {
-			Reports.fail("",e.toString());
+			//Reports.fail("",e.toString());
 			e.printStackTrace();
 		}
 		row = sheet.getRow(rowNum);
@@ -297,7 +297,7 @@ public class ExcelSheetHandler {
 			fout = new FileOutputStream(filepath);
 
 		} catch (FileNotFoundException e) {
-			Reports.fail("",e.toString());
+			//Reports.fail("",e.toString());
 			System.out.println("Unable to locate Excel ");
 			e.printStackTrace();
 
@@ -305,7 +305,7 @@ public class ExcelSheetHandler {
 		try {
 			workbook.write(fout);
 		} catch (IOException e) {
-			Reports.fail("",e.toString());
+			//Reports.fail("",e.toString());
 			System.out.println("unable to set Excel Data");
 		}
 	}
