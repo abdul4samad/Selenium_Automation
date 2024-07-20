@@ -1,0 +1,1473 @@
+filemanager:
+  destinationHost: "fm-ss-service"
+replicaCount: "1"
+egress:
+  oracle:
+    port: 2521
+  logstash:
+    port: 5044
+  kafka:
+    port: 9093
+    adminPort: 9091
+  authorizationserver:
+    port: 8090
+  sftp:
+    ports:
+      - 22
+      - 53
+      - 7800
+      - 8080
+      - 6514
+      - 9292
+      - 8443
+      - 8000
+      - 8383
+      - 8090
+      - 25
+      - 9084
+      - 9017
+      - 16443
+      - 9003
+  alarmHandler:
+    port: 6006
+service:
+  type: "NodePort"
+volume:
+  data:
+    storageClassName: "datafabric-test-mtn-local"
+resources:
+  requests:
+    cpu: 1
+    memory: 4Gi
+  limits:
+    cpu: 1
+    memory: 4Gi
+properties:
+  accessmgmt:
+    client:
+      id: eric-sec-admin-user-management
+    context: auth
+    host: eric-sec-access-mgmt-http
+    plaintext_port: "8080"
+    port: "8443"
+    realm: ewp
+    schedule: 0 03 * * *
+    should:
+      delete:
+        dormant:
+          users: "false"
+    tls:
+      enable: "true"
+    user:
+      inactive:
+        days: "30"
+  account:
+    dormancy:
+      service:
+        reminderdays: ""
+        uselastloginfordormancyforahwithtag: ""
+        withtags:
+          sql:
+            insert:
+              parallel:
+                degree: "1"
+            update:
+              parallel:
+                degree: "1"
+    iban:
+      service:
+        bankcode: MCOM
+        branchcode: ""
+        countrycode: PK
+        enabled: "false"
+        requiredprofiletag: ""
+    transactions:
+      statistics:
+        enabled: true
+        schedule: 0 0 * * *
+        sptransfercontexts: http-sp,http-momobusiness
+  accountholder:
+    maximumlinkedaccountholders: "5"
+    total_balance_thresholds:
+      enabled: true
+  accountholderapprovalcompleted:
+    version: "1.0"
+  accountholderconsent:
+    defaultvaliditytimeforfinancialscopes: "6"
+    defaultvaliditytimeforinformationalscopes: "1"
+    defaultvaliditytimeunitforfinancialscopes: MONTHS
+    defaultvaliditytimeunitforinformationalscopes: YEARS
+    fallbackalphatwocodeforcountry: ""
+  accountholderconsentcompleted:
+    version: "1.0"
+  accumulator:
+    accumulators_to_use: "5"
+    expiry_in_days: "3"
+    handle_accumulator_for_types: ""
+  admin:
+    profile:
+      usagecount: "true"
+    user:
+      emailismandatory: "false"
+      max:
+        idle:
+          days: "31"
+  alarm_handler:
+    host: eric-fh-alarm-handler
+    path: /alarm-handler/v1/fault-indications
+    port: "6006"
+    tls:
+      enable: "true"
+  apiuser:
+    aliassubtypename: PGUSER
+    targetenvironmentname: mtnbenin
+  application:
+    name: m3
+  applyforpreapproval:
+    version: "1.0"
+  approvals:
+    expiration:
+      enabled: "false"
+    reporting:
+      expired_approvals_report_enabled: "false"
+  authorization:
+    service:
+      access_token_expiry_length: 400
+      certificate:
+        alias: auth_key_alias
+      enabled: "true"
+      host: https://m3-service:8080
+      keystore:
+        type: PKCS12
+      refresh_token_expiry_length: "720"
+  autodisconnect:
+    activated: "true"
+  bankinstructioncompleted:
+    version: "1.0"
+  basicreportwriter:
+    file:
+      enabled: "true"
+    kf:
+      enabled: "true"
+  batch:
+    invitation:
+      enabled: "false"
+    transfer:
+      externaltax:
+        callwhenlimitreached: "true"
+        enabled: "false"
+        exempted:
+          profiletagname: EXTERNAL_TAX_EXEMPTION
+        noofmaxretries: "3"
+        timeoutinseconds: "5"
+  batchtransaction:
+    transfernotification:
+      useaccountownerassender: "false"
+  billmanager:
+    data_expiration:
+      days_to_wait_for_empty_batches_to_expire: "60"
+      days_to_wait_for_paid_bills_to_expire: "60"
+      timeout_in_hours: "1"
+    require_bill_provider_contact_to_send_notification: "false"
+    unique_customer_reference_per_bill_provider: "false"
+    user_approval_timeout_in_hours: "24"
+  bonus:
+    callback:
+      context: /bonus
+  bonusnotification:
+    version: "1.1"
+  ca:
+    name: m3-internal-ca
+  callback:
+    service:
+      context: /cb
+  campaignmanagement:
+    campaign:
+      payout:
+        schedule: '*/15 * * * *'
+        transactiontimeout: "1"
+    cashback:
+      payout:
+        schedule: '*/15 * * * *'
+  card:
+    backend:
+      linkcard:
+        version: "1.2"
+      orderpersonalcard:
+        version: "1.1"
+      unblockcard:
+        version: "1.1"
+    client:
+      context: /card
+  cashback:
+    accumulators_to_store: "10"
+  cashin:
+    fraud:
+      detection:
+        mode: AGENT_AND_CONSUMER_ACCOUNTS
+        quantity: 2
+        time:
+          span: 120
+  cashout:
+    fraud:
+      detection:
+        max:
+          number:
+            of:
+              cashouts: ""
+        mode: NO_DETECTION
+        time:
+          span:
+            in:
+              seconds: ""
+  ciam:
+    authorization:
+      cache:
+        size: "10000"
+      client:
+        context: /caep
+        host:
+          port: "8080"
+          url: https://ciam-callback-service
+      ewp:
+        hostname: ewp-service
+      jwtid:
+        expiry:
+          time: "30"
+      path: /ciam
+      request:
+        timeout: "30"
+      retries: "5"
+      retry:
+        wait: "2"
+      signature:
+        expiry:
+          time: "12"
+      token:
+        expiry:
+          time: "30"
+    client:
+      context: /token
+      request:
+        timeout: "30"
+    session:
+      context: /authorize
+      scopes: partner
+      state:
+        expiry:
+          time: "10"
+  cluster:
+    name: m3_cluster
+    port: "7800"
+  credential:
+    key:
+      alias: m3-credential-key
+    passwordreset:
+      suspension:
+        duration:
+          nonofficehours:
+            minutes: "720"
+          officehours:
+            minutes: "240"
+        enabled: "false"
+    pinreset:
+      passwordreset:
+        duration:
+          weekends:
+            minutes: "2880"
+      suspension:
+        duration:
+          nonofficehours:
+            minutes: "720"
+          officehours:
+            minutes: "240"
+          weekends:
+            minutes: "2880"
+        enabled: "false"
+        imsi:
+          enabled: "false"
+          minutes: "4320"
+    setimsi:
+      suspension:
+        duration:
+          nonofficehours:
+            minutes: "720"
+          officehours:
+            minutes: "240"
+          weekends:
+            minutes: "2880"
+        enabled: "false"
+  csv:
+    publickeycertificate:
+      alias: ""
+    report:
+      version: "6.0"
+  customervalidation:
+    version: "1.1"
+  database:
+    cleanup:
+      partitions:
+        paralleldegree: "1"
+        time:
+          pattern: 30 2 * * *
+    host: application-oracle-service
+    oracle:
+      tablespace_encryption: "true"
+    pool:
+      initial_size: 200
+      max_size: 200
+    port: "2521"
+    readonlyoperationrouting:
+      downloadregisteredaccountholders:
+        context:
+          exclude: ""
+          include: ""
+        enable: "false"
+      getaccount:
+        context:
+          exclude: ""
+          include: ""
+        enable: "false"
+      getaccountholderadditionalinformation:
+        context:
+          exclude: ""
+          include: ""
+        enable: "false"
+      getaccountholderaddress:
+        context:
+          exclude: ""
+          include: ""
+        enable: "false"
+      getaccountholderaliases:
+        context:
+          exclude: ""
+          include: ""
+        enable: "false"
+      getaccountholderidentification:
+        context:
+          exclude: ""
+          include: ""
+        enable: "false"
+      getaccountholderinfo:
+        context:
+          exclude: ""
+          include: ""
+        enable: "false"
+      getaccountholderlimits:
+        context:
+          exclude: ""
+          include: ""
+        enable: "false"
+      getaccountholderpersonalinformation:
+        context:
+          exclude: ""
+          include: ""
+        enable: "false"
+      getaccountholderratingcounters:
+        context:
+          exclude: ""
+          include: ""
+        enable: "false"
+      getaccounts:
+        context:
+          exclude: ""
+          include: ""
+        enable: "false"
+      getapprovals:
+        context:
+          exclude: ""
+          include: ""
+        enable: "false"
+      getbalance:
+        context:
+          exclude: ""
+          include: ""
+        enable: "false"
+      getconnectedaccountholders:
+        context:
+          exclude: ""
+          include: ""
+        enable: "false"
+      getcontactlist:
+        context:
+          exclude: ""
+          include: ""
+        enable: "false"
+      gethierarchytransactionhistory:
+        context:
+          exclude: ""
+          include: ""
+        enable: "false"
+      getregisteredaccountholders:
+        context:
+          exclude: ""
+          include: ""
+        enable: "false"
+      getselectedaccountholderinfo:
+        context:
+          exclude: ""
+          include: ""
+        enable: "false"
+      getserviceproviderdetails:
+        context:
+          exclude: ""
+          include: ""
+        enable: "false"
+      gettransactionhistory:
+        context:
+          exclude: ""
+          include: ""
+        enable: "false"
+      gettransactionhistorydetails:
+        context:
+          exclude: ""
+          include: ""
+        enable: "false"
+    service_name: EMO
+    tls:
+      enable: true
+      keystore_password_alias: ${local.http.tls.keystore_password_alias}
+      keystore_path: ${local.http.tls.keystore_path}
+      keystore_type: ${local.http.tls.keystore_type}
+    truncate:
+      partitions:
+        time:
+          pattern: 0 3 * * *
+    type: ORACLE
+    username: emo
+  depositor:
+    accumulatorstostore: "10"
+    createtypes: ""
+    distributionengine: Top Down
+    distributionratios: ""
+    distributiontransfertypesuffix: DISTRIBUTION_TRANSFER
+    generatetypes: ""
+    recalculatetypes: ""
+    transfertypesuffix: DEPOSITOR_COMMISSIONING
+  ebs:
+    database:
+      password:
+        alias: ebs.db.password
+      url: jdbc:oracle:thin:@localhost:1521:sid
+      user: rds
+    full:
+      sync:
+        timer:
+          pattern: 0 4 * * *
+    high:
+      contention:
+        sync:
+          timer:
+            pattern: 0,30 0-3,5-23 * * *
+    max:
+      concurrency: "128"
+      db:
+        concurrency: "6"
+      nr:
+        of:
+          days: "1"
+      outstanding: "10000"
+      sync:
+        concurrency: "2"
+    tls:
+      key_management_type: LEGACY
+      keystore_password_secret_path: ""
+      keystore_path: ""
+      keystore_type: PKCS12
+  epi:
+    provider:
+      context: /ip
+  eui:
+    identification:
+      expiry:
+        service:
+          accountholderblocking: "false"
+          enabled: "false"
+          reminderdays: ""
+          transactiontimeout: "10"
+  external:
+    rating:
+      batch:
+        legacy:
+          enabled: "false"
+      context: /er
+  external_authorization:
+    context: /
+  externalidp:
+    client:
+      sso:
+        enabled: "false"
+    number:
+      of:
+        retries: "5"
+    retry:
+      interval:
+        in:
+          minutes: "2"
+    server:
+      context: /rest/v1/
+      host: idp
+      plaintext_port: "8080"
+      port: "8443"
+    tls:
+      enable: "true"
+  externallogging:
+    file:
+      enabled: "true"
+    kf:
+      enabled: "true"
+  externalprovider:
+    westernunion:
+      moneyavailablenotificationreply:
+        version: "1.0"
+      pickupreceiverequest:
+        version: "1.1"
+      pickupstatusnotificationreply:
+        version: "1.0"
+      pickupvalidationrequest:
+        version: "1.1"
+      receivemoneyrequest:
+        version: "1.1"
+      receiverpaidnotificationreply:
+        version: "1.0"
+      sendmoneystorerequest:
+        version: "1.0"
+      sendmoneyvalidationrequest:
+        version: "1.0"
+      serverheartbeatreply:
+        version: "1.0"
+      serverheartbeatrequest:
+        version: "1.0"
+      transactioninquiryrequest:
+        version: "1.2"
+  financial:
+    finalization:
+      time: 3
+  frontend:
+    service:
+      context: /fe
+  gatewayprovisioning:
+    client:
+      context: /provisioning
+  genericcard:
+    client:
+      context: /genericcard
+  http:
+    bind_address: 0.0.0.0
+    pool:
+      max_size: 200
+    port: "8080"
+    retry:
+      count: "0"
+      seconds:
+        delay: "30"
+    tls:
+      allowed_versions: TLSv1.3,TLSv1.2
+      enable: "true"
+      enabled_ciphers: ""
+      require_client_cert: true
+      server_cert_alias: m3
+      verify_client_host: "false"
+  initiate:
+    password:
+      reset:
+        url: https://172.21.54.183/resetpasswordwithotp
+  initiatestkaction:
+    version: "1.0"
+  initiatetransfercompleted:
+    version: "1.1"
+  interoperability:
+    bulk:
+      client:
+        timer:
+          schedule: '* * * * *'
+          service:
+            timeoutunit: HOURS
+            transactiontimeout: "24"
+        transaction:
+          batchsize: "1000"
+      participants:
+        timer:
+          service:
+            accountholderaddfetchsize: "100000"
+            accountholderdeletefetchsize: "10000"
+            batchsize: "10000"
+            expirationtimeout: "30"
+            expirationtimeoutunit: MINUTES
+            retrycount: "3"
+            schedule: '* * * * *'
+            timeoutunit: HOURS
+            transactiontimeout: "24"
+      server:
+        quotes:
+          maximumconcurrentjobs: "4"
+          schedule: '* * * * *'
+          transactiontimeout: "15"
+          transactiontimeoutunit: MINUTES
+      transfer:
+        maximumconcurrentjobs: "4"
+        schedule: '* * * * *'
+        transactiontimeout: "15"
+        transactiontimeoutunit: MINUTES
+    client:
+      authorizationprovider:
+        context: /interop
+      financial:
+        context: /interop
+        version:
+          getauthorizations: "1.0"
+          gettransfers: "1.0"
+          postbulkquotes: "1.0"
+          postbulktransfers: "1.0"
+          postquotes: "1.0"
+          posttransactionrequests: "1.0"
+          posttransfers: "1.0"
+      lookup:
+        context: /interop
+        version:
+          deleteparticipants: "1.0"
+          getparticipants: "1.0"
+          getparties: "1.0"
+          postbulkparticipants: "1.0"
+          postparticipants: "1.0"
+      open:
+        authorization:
+          username: EWP
+      service:
+        authorizationtimeout: "10"
+        authorizationtimeoutunit: SECONDS
+        bulkquoteexpirationtime: "10"
+        bulkquotetimeunit: MINUTES
+        bulktransferexpirationtime: "10"
+        bulktransfertimeunit: MINUTES
+        extensionlistlimit: "16"
+        is:
+          refund:
+            fsp:
+              fee: "false"
+          transferid:
+            transactionid: "false"
+        lookup_tmeout: "10"
+        lookuptimeoutunit: SECONDS
+        maxextensionkeylength: "32"
+        maxextensionvaluelength: "128"
+        openauthorizationtokenvaliditytime: ""
+        quoteexpirationtime: "5"
+        quoteexpirationtimeunit: MINUTES
+        quotetimeout: "10"
+        quotetimeoutunit: SECONDS
+        retry:
+          enabled: "false"
+        retrytimeout: "3"
+        retrytimeoutforgettransfer: "5"
+        retrytimeoutunit: SECONDS
+        retrytimeoutunitforgettransfer: MINUTES
+        timeoutforgettransfer: "9999"
+        timeoutunitforgettransfer: HOURS
+        transfertimeout: "1"
+        transfertimeoutunit: MINUTES
+        transfertype:
+          prefix:
+            enabled: "false"
+        use:
+          disclosing:
+            fee: "false"
+          openauthorization: "false"
+        usesendamountforforextransactions: "false"
+      sourceidentifier: MTNBJMobileMoney
+    http:
+      jwe:
+        encryption:
+          cert:
+            alias: ""
+        keystore:
+          password: ""
+          path: ""
+          type: PKCS12
+      jws:
+        keystore:
+          password: ""
+          path: ""
+          type: PKCS12
+        signing:
+          cert:
+            alias: ""
+      tls:
+        key_management_type: KEYSTORE
+        keystore:
+          password: secret/m3-secrets/ioa.tls.keystore.password
+          path: secret/m3-ioa-tls-keystore/ioa-tls-keystore
+          type: PKCS12
+    interledger:
+      address:
+        identifier: ewp.id
+    lookup:
+      provisioning: AUTOMATIC
+    server:
+      service:
+        atmcashouttimeout: "10"
+        atmcashouttimeoutunit: SECONDS
+        connectiontimeout: "30"
+        is:
+          refund:
+            fsp:
+              fee: "false"
+        maximumquoteexpirationtime: "5"
+        maximumquoteexpirationtimeunit: MINUTES
+        maximumtransferexpirationtime: "5"
+        maximumtransferexpirationtimeunit: MINUTES
+        puttransferretryexpirationtime: "24"
+        puttransferretryexpirationtimeunit: HOURS
+    synchronization:
+      duration: "3"
+      maxsize: "5000"
+      timeunit: MINUTES
+  invoicepaymentcompleted:
+    version: "1.0"
+  isoatmericsson:
+    config:
+      addisoheader: "false"
+      countrycode: ""
+      hexasupper: "false"
+      providerid: ""
+      stanunchanged: "false"
+      usebinarybitmapformat: "false"
+      usebinarymessagelengthformat: "true"
+    server:
+      maxclients: "50"
+      maxtimebetweenheartbeat: "60000"
+      portnumber: "8081"
+      securesocket:
+        authentication:
+          certificate:
+            alias: ""
+        protocol: TLS
+        use: "false"
+      socketreadtimeoutmillis: "5000"
+      tls:
+        keystore:
+          path: ""
+          type: JKS
+      useclientauthentication: "false"
+  isoatminterswitch:
+    config:
+      addisoheader: "true"
+      countrycode: ""
+      hexasupper: "false"
+      providerid: ""
+      stanunchanged: "true"
+      usebinarybitmapformat: "false"
+      usebinarymessagelengthformat: "true"
+    server:
+      maxclients: "50"
+      maxtimebetweenheartbeat: "60000"
+      portnumber: "8082"
+      securesocket:
+        authentication:
+          certificate:
+            alias: ""
+        protocol: TLS
+        use: "false"
+      socketreadtimeoutmillis: "5000"
+      tls:
+        keystore:
+          path: ""
+          type: JKS
+      useclientauthentication: "false"
+  kds:
+    profiles:
+      requiring:
+        uploaded:
+          documents: ""
+  keydomain:
+    credential:
+      age: "182"
+      schedule: 30 2 * * *
+  linkfinancialresourceinformationcompleted:
+    version: "1.0"
+  logging:
+    logstash:
+      tls:
+        enable: "true"
+  m3financialtransaction:
+    include_sensitive_data: "false"
+  masterkeydomainservice:
+    alias:
+      prefix: ""
+  message_bus:
+    consume:
+      max:
+        poll:
+          size: "500"
+      session:
+        timeout:
+          ms: "10000"
+      timeout: "10"
+    enable: "true"
+    host: eric-data-message-bus-kf
+    port: "9093"
+    tls:
+      enable: "true"
+  messagesigning:
+    alias: m3-internal-signer
+  mminteroperability:
+    client:
+      financial:
+        context: /mminterop
+        transactions:
+          version: "1.1"
+      service:
+        defaultserviceprovider: ""
+        retryinterval: "1"
+        retryintervalunit: MINUTES
+        transactiontimeout: "9999"
+        transactiontimeoutunit: HOURS
+        transfertype:
+          prefix:
+            enabled: "false"
+        transmissioncountlimit: "-1"
+        transmissiontimeout: "5"
+        transmissiontimeoutunit: SECONDS
+    synchronization:
+      duration: "3"
+      maxsize: "5000"
+      timeunit: MINUTES
+  netting:
+    service:
+      enabled: "false"
+  network:
+    lookup:
+      context: ""
+  nonfinancial:
+    fraud:
+      detection:
+        max:
+          number:
+            of:
+              financial:
+                transactions: "1"
+        mode: CONSUMER
+        time:
+          span:
+            in:
+              seconds: "86400"
+  operations:
+    registration:
+      commissioning: false
+  overdraft:
+    charges_limit_base: current
+    external:
+      provider:
+        context: /overdraft
+    interest_delay_hours: "0"
+    repayment:
+      callback:
+        enabled: "true"
+    round_down_enabled: "false"
+    status:
+      change:
+        max:
+          number:
+            of:
+              status:
+                changes: 100
+        time:
+          span:
+            in:
+              minutes: 2
+    subscription_job_queue_count: "50000"
+  partial:
+    reversal:
+      ageindays: "90"
+      mode: COMBINED
+      when:
+        zero:
+          funds: NOT_ALLOWED_WHEN_ZERO_FUNDS
+  partnerid:
+    aliassubtypename: momopay
+    idlength: "6"
+    idprefix: ""
+  paymentcompleted:
+    version: "1.0"
+  pinreset:
+    version: "1.1"
+  pos:
+    allow:
+      duplicate:
+        msisdn: false
+  prereservation:
+    defaultvaliditydays: "14"
+    maximumvaliditydays: "31"
+    scheduleexpired: 0 0 * * *
+    transactiontimeoutinhours: "1"
+  prereservationcompleted:
+    version: "1.0"
+  product:
+    provider:
+      context: /product
+  profile:
+    maximum_number_of_account_holder_profiles: 400
+    maximum_number_of_ratingcounters: "20"
+  rating:
+    initiating:
+      commission: "false"
+    rate_account_holder_update: false
+    recruiter:
+      commission: "false"
+  ratingcounterthreshold:
+    callback:
+      context: /rating
+  ratingcounterthresholdnotification:
+    version: "1.1"
+  ratingtrigger:
+    context: /
+    notification:
+      version: "1.0"
+  rds:
+    enabled: true
+    include:
+      additional:
+        info: true
+      external:
+        instrument:
+          additional:
+            info: true
+      rating:
+        parameter: true
+    message_bus:
+      enabled: "false"
+  refund:
+    reverse_transfer_counters: "false"
+  response:
+    validation:
+      failure:
+        reject: true
+  revenuesplit:
+    systemowner:
+      percentage: "86.0"
+  reversal:
+    overdraft:
+      accessfee: true
+      allowed: true
+  safenet:
+    partition: ""
+  securitymodule:
+    fingerprintfallbackcheckjubatimezoneenabled: "false"
+    fingerprintsignaturealgorithm: HmacSHA256
+  sendacknowledge:
+    version: "2.2"
+  separate:
+    systemaccounts:
+      perbankdomain: "false"
+  service:
+    provider:
+      context: /serviceprovider
+    scheduledtransaction:
+      maxnumberofretriesforscheduleddebit: "4"
+      maxrecordprocessatatime: "10000"
+      scheduleddebittime: "04:00"
+  settlement:
+    requiredapprovals: "0"
+  signing:
+    alias: EMO_CERT_S
+  signingkeydomainservice:
+    alias:
+      prefix: ""
+    default_signing_alias: ""
+    usehsmsigningkeys: "false"
+  single:
+    systemaccounts:
+      bankdomainname: ""
+  sp:
+    resend:
+      interval: "0"
+  spbalance:
+    version: "1.0"
+  spdisableautorefill:
+    version: "1.0"
+  spenableautorefill:
+    version: "1.0"
+  spfinancialresourceinfo:
+    version: "1.0"
+  spfinancialresourceowner:
+    version: "1.0"
+  spgetbilldetails:
+    version: "1.0"
+  spgetbillproviders:
+    version: "1.0"
+  spgetbilltypes:
+    version: "1.0"
+  spgettaxableamount:
+    version: "1.0"
+  spinitiatelinkfricompleted:
+    version: "1.0"
+  sppayment:
+    version: "1.0"
+  sppreapproval:
+    defaultvalidity:
+      unit: SECONDS
+      value: "0"
+    informserviceprovideraboutaddedpreapprovals: "false"
+    keeppending:
+      unit: MINUTES
+      value: 5
+    maxnumberofpendingpreapprovals: "3"
+    maxvalidity:
+      unit: SECONDS
+      value: "0"
+    multipreapprovalenabled: "false"
+    preapprovalexternalvalidationenabled: "false"
+    version: "1.2"
+  spupdateautorefill:
+    version: "1.0"
+  spupdatereservation:
+    version: "1.0"
+  spverifyfri:
+    version: "1.0"
+  spwithdrawversion: "1.1"
+  stk:
+    accessmodule:
+      context: /stk
+  syslog:
+    enable: "true"
+    host: syslog-service
+    port: "6514"
+    tls:
+      enable: "true"
+  transferapproval:
+    transactionapproval:
+      expire_time: 3
+      expire_units: MINUTES
+  tutuka:
+    api:
+      version: v1.1
+    checksum:
+      algorithm: HmacSHA1
+    client:
+      context: /tutuka
+    ownspin: "true"
+    unblock:
+      reasons: CARD_LOST,CARD_STOLEN,CARD_INACTIVE
+  usermanagement:
+    alternative:
+      authentication:
+        ssoenabled: "false"
+    otpenabled: "false"
+  voucher:
+    autopopulated:
+      fields:
+        redeem: RECEIVER_FIRST_NAME,RECEIVER_SURNAME,RECEIVER_EMAIL,RECEIVER_IDENTIFICATION,RECEIVER_MSISDN,RECEIVER_BIRTH_DATE,RECEIVER_ALIAS,RECEIVER_EXTERNAL_ID,RECEIVER_USERNAME,RECEIVER_LANGUAGE,SECRET,REASON
+    batch:
+      includesecret: "false"
+      sendernotification: "true"
+    includesecret: "false"
+    maxvaliditydays: "60"
+    operator:
+      mandatory:
+        fields:
+          redeem: ""
+    periodbeforeblocked: "30"
+    retryvoucherexpiryfordays: "60"
+    reversestrategy: SENDER
+    tokenreturndays: "30"
+    vouchervaliditydays: "30"
+  watchlist:
+    autoimport:
+      schedule: 20 17 * * *
+    scan:
+      blockgreylistedonactivation: "false"
+      sanctionaccountholderhierarchy: "false"
+enabled_optional_modules:
+  - com.ericsson.em.emm.account-deposit
+  - com.ericsson.em.emm.accountholderconsent.accountholderconsent
+  - com.ericsson.em.emm.accumulatormanagement.accumulator-management
+  - com.ericsson.em.emm.basic-reporting
+  - com.ericsson.em.emm.billmanager.bill-manager
+  - com.ericsson.em.emm.card-tutuka
+  - com.ericsson.em.emm.depositorcommissioning.depositor-commissioning
+  - com.ericsson.em.emm.ebs.external-balance-sync
+  - com.ericsson.em.emm.external-logging-converter
+  - com.ericsson.em.emm.externalprovider
+  - com.ericsson.em.emm.externalrating
+  - com.ericsson.em.emm.financiallog-converter-v1_0
+  - com.ericsson.em.emm.invoice.invoice-payment
+  - com.ericsson.em.emm.isoatm-ericsson
+  - com.ericsson.em.emm.isoatm-interswitch
+  - com.ericsson.em.emm.kds
+  - com.ericsson.em.emm.loan
+  - com.ericsson.em.external-logging
+  - com.ericsson.em.emm.external-logging-converter
+  - com.ericsson.em.emm.notification-group
+  - com.ericsson.em.emm.messagesigning
+  - com.ericsson.em.emm.quotamanagement.quota-management
+  - com.ericsson.em.emm.rds-ahdump
+  - com.ericsson.em.emm.rds.rds
+overrides:
+  java:/AccountDepositClientService:
+    Url: https://bjtestoutvip.mtn.com.bj:9494/sp
+  java:/AccountLifeCycleService:
+    DaysForDormant: 274
+    EnabledDormantLifeCycle: true
+    Schedule: 5 * * * *
+  java:/AcknowledgeService:
+    Url: https://am2.bjewp.test.mtn.local:8090/callback
+  java:/BankInstructionTransactionService:
+    MaxTotalOutstandingTransactions: 100
+  java:/BankInterfaceService:
+    SignerProviderName: java:/AccountHolderSignerProvider
+  java:/BatchTransactionService:
+    Schedule: 0 1 * * *
+    TransactionTypes:
+    - Adjustment,ADJUSTMENT
+    - Reversal,REVERSAL
+    - Voucher,TRANSFER_TO_VOUCHER
+    - Transfer,TRANSFER
+    - ChangeBankDomain,CHANGE_ACCOUNTHOLDER_BANK_DOMAIN
+    - Payment,PAYMENT
+  java:/BonusService:
+    MaxQueue: 5000
+    Url: http://localhost:8080/rawxmlsimulator
+  java:/CallbackService:
+    Url: https://am2.bjewp.test.mtn.local:8090/callback
+  java:/CardCallbackService:
+    Url: http://localhost:9097/card
+  java:/CardPinService:
+    MinimumPinCodeLength: 4
+  java:/CommissionAggregationService:
+    ShallAggregateCommission: true
+  java:/CustomerCareHttpOperationService:
+    AuthenticationProviderName: java:/DefaultAuthenticationProvider
+  java:/DjConnectionService:
+    DowJonesFilePath: XML
+    DowJonesHostUrl: https://f5test.mtn.com.bj:9070
+  java:/EndOfDayInterestCalculationService:
+    Schedule: 0 3 * * *
+  java:/ExternalBalanceSyncService:
+    DatabaseConfigurations:
+    - DatabaseAlias=EMO
+    - DatabaseUrl=jdbc:oracle:thin:@(DESCRIPTION=(ADDRESS=(PROTOCOL=TCPS)(HOST=BJTESTRDSDBVIP)(PORT=2521))(CONNECT_DATA=(SERVICE_NAME=EMO))(SECURITY=(SSL_SERVER_CERT_DN="CN=BJTESTRDSDBVIP")))
+    - DatabaseUser=${global.ebs.database.user:balance}
+    - DatabasePasswordAlias=${global.ebs.database.password.alias:ebs.db.password}
+    - UseTls=true
+    - IncludePrivacyData=false
+    - SyncOverdraft=false
+  java:/ExternalLogService:
+    QueueSize: 1000
+  java:/ExternalOverdraftProviderContext:
+    ConnectionTimeoutForGetOverdraftLimit: 3000
+    Url: https://am2.bjewp.test.mtn.local:8090/overdraft
+  java:/ExternalRatingClient:
+    Url: https://bjtestoutvip.mtn.com.bj:9292/er
+  java:/GatewayClientService:
+    Url: https://f5test.mtn.com.bj:9032/gw
+  java:/GenericCardProcessor:
+    Url: http://localhost:8080/genericcard
+  java:/InitiateReversalService:
+    AllowedReversalTimeLimit: 72
+    ApprovalExpirationTime: 48
+    DisputeTimeLimit: 24
+    ReservationEnabled: true
+  java:/InitiateTransferService:
+    ExpireTime: 3
+  java:/InteroperabilityAuthorizationClientService:
+    Url: https://f5test.mtn.com.bj:9028
+  java:/InteroperabilityFinancialClientService:
+    Url: https://f5test.mtn.com.bj:9028/fsp/1.0
+  java:/InteroperabilityLookupClientService:
+    Url: https://f5test.mtn.com.bj:9028/fsp/1.0
+  java:/InvoiceService:
+    PaymentReferenceLength: 7
+    PaymentReferenceUseLetters: false
+  java:/KeyStoreManager:
+    MasterKeyAge: ""
+  java:/LogFileHandler:
+    AcceptTypes: FILogRecord,SessionLogRecord,BaseAuditTrailLogRecord,InvitationLogRecord,BankInterfaceCommunicationLogRecord,BaseAccountHolderLogRecord,ApiValidationErrorLogRecord,OverdraftLogRecord,BalanceBucketLogRecord,WatchListCommunicationLogRecord,ProductProviderCommunicationLogRecord,ServiceProviderCommunicationLogRecord,AccountLogRecord,ExternalInstrumentProviderCommunicationLogRecord
+  java:/NotificationService:
+    Url: https://bjtestoutvip.mtn.com.bj:9090/ns
+  java:/NumberNormalization:
+    CountryCode: 229
+  java:/OtpService:
+    OtpOperationAtm:
+    - OtpValidityMinutes:5
+    - OtpLength:4
+    - UseDigits:true
+    - UseLetters:false
+    - ExcludedDigits:023456789
+    - ExcludedLetters:loi
+    - NumberOfTries:3
+    - OtpWindowSize:10
+    - OtpWindowAge:600
+    - OtpQuarantineTime:3600
+    - OtpFailureLimit:20
+    OtpOperationBankAccountVerification:
+    - OtpValidityMinutes:10
+    - OtpLength:4
+    - UseDigits:true
+    - UseLetters:false
+    - ExcludedDigits:023456789
+    - ExcludedLetters:loi
+    - NumberOfTries:3
+    - OtpWindowSize:10
+    - OtpWindowAge:600
+    - OtpQuarantineTime:3600
+    - OtpFailureLimit:20
+    OtpOperationCancelCashVoucher:
+    - OtpValidityMinutes:5
+    - OtpLength:4
+    - UseDigits:true
+    - UseLetters:false
+    - ExcludedDigits:023456789
+    - ExcludedLetters:loi
+    - NumberOfTries:3
+    - OtpWindowSize:10
+    - OtpWindowAge:600
+    - OtpQuarantineTime:3600
+    - OtpFailureLimit:20
+    OtpOperationCashIn:
+    - OtpValidityMinutes:10
+    - OtpLength:4
+    - UseDigits:true
+    - UseLetters:false
+    - ExcludedDigits:023456789
+    - ExcludedLetters:loi
+    - NumberOfTries:3
+    - OtpWindowSize:10
+    - OtpWindowAge:600
+    - OtpQuarantineTime:3600
+    - OtpFailureLimit:20
+    OtpOperationCredentialsReset:
+    - OtpValidityMinutes:10
+    - OtpLength:4
+    - UseDigits:true
+    - UseLetters:false
+    - ExcludedDigits:023456789
+    - ExcludedLetters:loi
+    - NumberOfTries:3
+    - OtpWindowSize:10
+    - OtpWindowAge:600
+    - OtpQuarantineTime:3600
+    - OtpFailureLimit:20
+    OtpOperationCredentialsSelfPinReset:
+    - OtpValidityMinutes:10
+    - OtpLength:4
+    - UseDigits:true
+    - UseLetters:false
+    - ExcludedDigits:023456789
+    - ExcludedLetters:loi
+    - NumberOfTries:3
+    - OtpWindowSize:10
+    - OtpWindowAge:600
+    - OtpQuarantineTime:3600
+    - OtpFailureLimit:20
+    OtpOperationEmailVerification:
+    - OtpValidityMinutes:10
+    - OtpLength:4
+    - UseDigits:true
+    - UseLetters:false
+    - ExcludedDigits:023456789
+    - ExcludedLetters:loi
+    - NumberOfTries:3
+    - OtpWindowSize:10
+    - OtpWindowAge:600
+    - OtpQuarantineTime:3600
+    - OtpFailureLimit:20
+    OtpOperationGeneral:
+    - OtpValidityMinutes:10
+    - OtpLength:4
+    - UseDigits:true
+    - UseLetters:false
+    - ExcludedDigits:023456789
+    - ExcludedLetters:loi
+    - NumberOfTries:3
+    - OtpWindowSize:10
+    - OtpWindowAge:600
+    - OtpQuarantineTime:3600
+    - OtpFailureLimit:20
+    OtpOperationLinkFinancialResource:
+    - OtpValidityMinutes:60
+    - OtpLength:4
+    - UseDigits:true
+    - UseLetters:false
+    - ExcludedDigits:023456789
+    - ExcludedLetters:loi
+    - NumberOfTries:3
+    - OtpWindowSize:10
+    - OtpWindowAge:600
+    - OtpQuarantineTime:3600
+    - OtpFailureLimit:20
+    OtpOperationLogin:
+    - OtpValidityMinutes:5
+    - OtpLength:4
+    - UseDigits:true
+    - UseLetters:false
+    - ExcludedDigits:023456789
+    - ExcludedLetters:loi
+    - NumberOfTries:3
+    - OtpWindowSize:10
+    - OtpWindowAge:600
+    - OtpQuarantineTime:3600
+    - OtpFailureLimit:20
+    OtpOperationMsisdnVerification:
+    - OtpValidityMinutes:10
+    - OtpLength:4
+    - UseDigits:true
+    - UseLetters:false
+    - ExcludedDigits:023456789
+    - ExcludedLetters:loi
+    - NumberOfTries:3
+    - OtpWindowSize:10
+    - OtpWindowAge:600
+    - OtpQuarantineTime:3600
+    - OtpFailureLimit:20
+    OtpOperationReclaimCashVoucher:
+    - OtpValidityMinutes:5
+    - OtpLength:4
+    - UseDigits:true
+    - UseLetters:false
+    - ExcludedDigits:023456789
+    - ExcludedLetters:loi
+    - NumberOfTries:3
+    - OtpWindowSize:10
+    - OtpWindowAge:600
+    - OtpQuarantineTime:3600
+    - OtpFailureLimit:20
+    OtpOperationRedeemCashVoucher:
+    - OtpValidityMinutes:5
+    - OtpLength:4
+    - UseDigits:true
+    - UseLetters:false
+    - ExcludedDigits:023456789
+    - ExcludedLetters:loi
+    - NumberOfTries:3
+    - OtpWindowSize:10
+    - OtpWindowAge:600
+    - OtpQuarantineTime:3600
+    - OtpFailureLimit:20
+    OtpOperationResetCardPin:
+    - OtpValidityMinutes:10
+    - OtpLength:4
+    - UseDigits:true
+    - UseLetters:false
+    - ExcludedDigits:023456789
+    - ExcludedLetters:loi
+    - NumberOfTries:3
+    - OtpWindowSize:10
+    - OtpWindowAge:600
+    - OtpQuarantineTime:3600
+    - OtpFailureLimit:20
+    OtpOperationSelfServiceNotificationReceiverEmailVerification:
+    - OtpValidityMinutes:10
+    - OtpLength:4
+    - UseDigits:true
+    - UseLetters:false
+    - ExcludedDigits:023456789
+    - ExcludedLetters:loi
+    - NumberOfTries:3
+    - OtpWindowSize:10
+    - OtpWindowAge:600
+    - OtpQuarantineTime:3600
+    - OtpFailureLimit:20
+    OtpOperationSelfServiceNotificationReceiverMsisdnVerification:
+    - OtpValidityMinutes:10
+    - OtpLength:4
+    - UseDigits:true
+    - UseLetters:false
+    - ExcludedDigits:023456789
+    - ExcludedLetters:loi
+    - NumberOfTries:3
+    - OtpWindowSize:10
+    - OtpWindowAge:600
+    - OtpQuarantineTime:3600
+    - OtpFailureLimit:20
+    OtpOperationSetProfile:
+    - OtpValidityMinutes:60
+    - OtpLength:4
+    - UseDigits:true
+    - UseLetters:false
+    - ExcludedDigits:023456789
+    - ExcludedLetters:loi
+    - NumberOfTries:3
+    - OtpWindowSize:10
+    - OtpWindowAge:600
+    - OtpQuarantineTime:3600
+    - OtpFailureLimit:20
+    OtpOperationUpdateIdentification:
+    - OtpValidityMinutes:60
+    - OtpLength:4
+    - UseDigits:true
+    - UseLetters:false
+    - ExcludedDigits:023456789
+    - ExcludedLetters:loi
+    - NumberOfTries:3
+    - OtpWindowSize:10
+    - OtpWindowAge:600
+    - OtpQuarantineTime:3600
+    - OtpFailureLimit:20
+  java:/PinCodeService:
+    MinimumPinCodeLength: 4
+  java:/PreApprovalExpiryService:
+    ScheduleExpired: '*/5 * * * *'
+  java:/RatingCounterThresholdService:
+    Url: http://localhost:8080/rawxmlsimulator
+  java:/RatingTriggerNotificationSender:
+    Url: http://localhost:8080/rawxmlsimulator
+  java:/RatingTriggerNotificationService:
+    MaxQueue: 1000
+  java:/RdsLogSenderService:
+    TimeoutInSeconds: 30
+    Url: https://rds-service:8080/rds
+  java:/ScheduledTransactionService:
+    Schedule: 0 3 * * *
+  java:/ServiceProviderClientService:
+    Url: https://am2.bjewp.test.mtn.local:8090/callback
+  java:/ServiceProviderHttpOperationService:
+    Context: sp
+  java:/SettlementProcessingService:
+    PaymentInstructionTransactionTimeoutDays: 1
+  java:/SigningKeyDomainService:
+    UseHsmSigningKeys: false
+  java:/VoucherSecretService:
+    Length: 4
+  java:/VoucherService:
+    AllowCashVoucherUserRegistration: false
+    AnyOtpRedeemerAllowed: true
+    MaxSecretLength: 4
+    MinSecretLength: 4
+    TokenLength: 12
+  java:/WatchListScanService:
+    DateOfBirthOffsetDays: 185
+    ScanParameters:
+    - NAMES
+    - GENDER
+    - BIRTH_DATE
+    - CITIZENSHIPS
+    Schedule: 0 2 * * *
+  java:/WatchListService:
+    BlackListRiskCategories:
+    - RiskCategory:3,1
+    - RiskCategory:4,3
+    - RiskCategory:4,23
+    - RiskCategory:4,34
+    GreyListRiskCategories:
+    - RiskCategory:3,2
+    - RiskCategory:3,6
+    - RiskCategory:3,7
+    - RiskCategory:3,8
+    - RiskCategory:3,9
+    - RiskCategory:3,10
+    - RiskCategory:3,11
+    - RiskCategory:3,25
+    - RiskCategory:3,31
+    - RiskCategory:1
+    - RiskCategory:2
+    - RiskCategory:4,4
+    - RiskCategory:4,12
+    - RiskCategory:4,13
+    - RiskCategory:4,14
+    - RiskCategory:4,15
+    - RiskCategory:4,16
+    - RiskCategory:4,17
+    - RiskCategory:4,22
+    - RiskCategory:4,26
+  java:/momobusinessHttpOperationService:
+    Context: momobusiness

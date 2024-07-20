@@ -10,8 +10,5 @@
         <module name="Selenium_Automation" />
       </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel>
-      <module name="Selenium Automation" target="8" />
-    </bytecodeTargetLevel>
   </component>
 </project>

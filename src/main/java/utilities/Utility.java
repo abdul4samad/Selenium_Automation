@@ -24,7 +24,7 @@ public class Utility {
 	public  Properties stbLocRepository;
 	static int waiting =0;
 	public static WebDriver driver;
-	
+
 
 
 
@@ -70,7 +70,7 @@ public class Utility {
      *************************************************************************************************/
      public static WebElement getLocator(String key, String type){
 
-    		 		fluentWait(5, 200, key, type);
+    		 		fluentWait(10, 200, key, type);
 
                    if (type.equalsIgnoreCase("id")) {
                          loct = driver.findElement(By.id(key));
@@ -190,21 +190,21 @@ public class Utility {
     	  WebDriverWait explicitWait = new WebDriverWait(driver,timeoutInSecond);
 
     	  if (type.equalsIgnoreCase("id")) {
-    		  explicitWait.until(ExpectedConditions.elementToBeClickable(By.xpath(key)));
+    		  explicitWait.until(ExpectedConditions.presenceOfElementLocated(By.xpath(key)));
          } else if (type.equalsIgnoreCase("xpath")) {
-        	 explicitWait.until(ExpectedConditions.elementToBeClickable(By.xpath(key)));
+        	 explicitWait.until(ExpectedConditions.presenceOfElementLocated(By.xpath(key)));
          } else if (type.equalsIgnoreCase("lnktxt")) {
-        	 explicitWait.until(ExpectedConditions.elementToBeClickable(By.linkText(key)));
+        	 explicitWait.until(ExpectedConditions.presenceOfElementLocated(By.linkText(key)));
          } else if (type.equalsIgnoreCase("name")) {
-        	 explicitWait.until(ExpectedConditions.elementToBeClickable(By.name(key)));
+        	 explicitWait.until(ExpectedConditions.presenceOfElementLocated(By.name(key)));
          } else if (type.equalsIgnoreCase("partlnktxt")) {
-        	 explicitWait.until(ExpectedConditions.elementToBeClickable(By.partialLinkText(key)));
+        	 explicitWait.until(ExpectedConditions.presenceOfElementLocated(By.partialLinkText(key)));
          } else if (type.equalsIgnoreCase("css")) {
-        	 explicitWait.until(ExpectedConditions.elementToBeClickable(By.cssSelector(key)));
+        	 explicitWait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(key)));
          } else if (type.equalsIgnoreCase("tagname")) {
-        	 explicitWait.until(ExpectedConditions.elementToBeClickable(By.tagName(key)));
+        	 explicitWait.until(ExpectedConditions.presenceOfElementLocated(By.tagName(key)));
          } else {
-        	 explicitWait.until(ExpectedConditions.elementToBeClickable(By.xpath(key)));
+        	 explicitWait.until(ExpectedConditions.presenceOfElementLocated(By.xpath(key)));
          }
 
       }
@@ -353,26 +353,26 @@ public class Utility {
 	public static void fluentWait(int duration, int pollingInMilliSec, String key, String type){
 
 		System.out.println("Under fluent wait for: "+key);
-		Wait<WebDriver> fluentWait = new FluentWait<WebDriver>(driver).withTimeout(Duration.ofSeconds(duration))
+		Wait<WebDriver> fluentWait = new FluentWait<>(driver).withTimeout(Duration.ofSeconds(duration))
 		        .pollingEvery(Duration.ofMillis(pollingInMilliSec)).ignoring(NoSuchElementException.class)
 		        .ignoring(StaleElementReferenceException.class).ignoring(WebDriverException.class);
 
 		if (type.equalsIgnoreCase("id")) {
-			fluentWait.until(ExpectedConditions.elementToBeClickable(By.id(key)));
+			fluentWait.until(ExpectedConditions.presenceOfElementLocated(By.id(key)));
        } else if (type.equalsIgnoreCase("xpath")) {
-    	   fluentWait.until(ExpectedConditions.elementToBeClickable(By.xpath(key)));
+    	   fluentWait.until(ExpectedConditions.presenceOfElementLocated(By.xpath(key)));
        } else if (type.equalsIgnoreCase("lnktxt")) {
-    	   fluentWait.until(ExpectedConditions.elementToBeClickable(By.linkText(key)));
+    	   fluentWait.until(ExpectedConditions.presenceOfElementLocated(By.linkText(key)));
        } else if (type.equalsIgnoreCase("name")) {
-    	   fluentWait.until(ExpectedConditions.elementToBeClickable(By.name(key)));
+    	   fluentWait.until(ExpectedConditions.presenceOfElementLocated(By.name(key)));
        } else if (type.equalsIgnoreCase("partlnktxt")) {
-    	   fluentWait.until(ExpectedConditions.elementToBeClickable(By.partialLinkText(key)));
+    	   fluentWait.until(ExpectedConditions.presenceOfElementLocated(By.partialLinkText(key)));
        } else if (type.equalsIgnoreCase("css")) {
-    	   fluentWait.until(ExpectedConditions.elementToBeClickable(By.cssSelector(key)));
+    	   fluentWait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(key)));
        } else if (type.equalsIgnoreCase("tagname")) {
-    	   fluentWait.until(ExpectedConditions.elementToBeClickable(By.tagName(key)));
+    	   fluentWait.until(ExpectedConditions.presenceOfElementLocated(By.tagName(key)));
        } else {
-    	   fluentWait.until(ExpectedConditions.elementToBeClickable(By.xpath(key)));
+    	   fluentWait.until(ExpectedConditions.presenceOfElementLocated(By.xpath(key)));
        }
 	}
 
@@ -460,5 +460,5 @@ public class Utility {
     	actions.moveToElement(getLocator(key, type)).build().perform();
     	System.out.println("Element move to the element: "+key);
 	 }
-	 
+
 }

@@ -1,12 +1,19 @@
 package run;
 
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.Select;
+import utilities.JSONToMap;
 import utilities.Utility;
 
 import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class UpdateAssessment {
@@ -16,94 +23,147 @@ public class UpdateAssessment {
         System.out.println(System.getProperty("user.dir")+"/images/");
 
         Utility.driver = new FirefoxDriver();
-        Utility.driver.get("https://www.swavlambancard.gov.in/admin/account/login");
+        Utility.driver.get("https://swavlambancard.gov.in/admin/login");
         Utility.driver.manage().window().maximize();
         Utility.getLocator("email", "id").sendKeys("cmo.varanasi2014@gmail.com");
-        Utility.getLocator("password", "id").sendKeys("Varanasi@832");
-        Thread.sleep(15000);
-        String data = "";
+        Utility.getLocator("pwd", "id").sendKeys("Varanasi@800");
+        ArrayList<HashMap<String, String>> data = new JSONToMap().getData();
         try {
-            FileReader fr = new FileReader(new File("DataFile.txt"));
-            BufferedReader br = new BufferedReader(fr);
-            data = br.readLine();
-            String array[] = data.split("-->");
-            while (!data.isEmpty()) {
+            for (HashMap<String, String> map : data) {
+                String date = map.get("Date"),
+                        serialCode = map.get("Serial Code"),
+                        enrolmentNumber = map.get("Enrolment Number").replace("/", ""),
+                        disabilityType = map.get("Disability Type"),
+                        assessmentStatus = map.get("Assessment Status"),
+                        affectedPart = map.get("Affected Part"),
+                        diagnosis = map.get("Dignosis"),
+                        remark = map.get("Remark"),
+                        district = map.get("District"),
+                        assignMedicalBord = map.get("Assign Medical Bord."),
+                        doctorName = map.get("Doctor Name"),
+                        disabilityPercent = map.get("Disability Percent"),
+                        disabilityCondition = map.get("Disability Condition").toLowerCase(),
+                        permanentTemporary = map.get("Permanent / Temporary"),
+                        reassessmentRequire = map.get("Reassessment Require").equals("null") ? "No" : map.get("Reassessment Require"),
+                        reassessmentReviewYear = map.get("Reassessment Review Year"),
+                        reassementDate = map.get("ReassementDate");
+                String filePath = System.getProperty("user.dir") + File.separator + "images" + File.separator + serialCode + ".jpg";
+                if (!Files.exists(Paths.get(filePath))) {
+                    continue;
+                }
                 try {
                     try {
-                        Utility.driver.get("https://www.swavlambancard.gov.in/admin/pwd/assessmentslist");
+                        Utility.driver.get("https://swavlambancard.gov.in/admin/assessments");
                         Thread.sleep(5000);
-                        WebElement search = Utility.getLocator("//div[@id='pwdAssessmentsDataTable_filter']//input", "xpath");
+                        WebElement search = Utility.getLocator("listPwdapplications_application_number", "id");
                         search.clear();
-                        search.sendKeys(array[1]);
-                        Thread.sleep(2000);
-                        search.sendKeys(Keys.BACK_SPACE);
-                        Thread.sleep(2000);
+                        search.sendKeys(enrolmentNumber);
+                        search.sendKeys(Keys.ENTER);
+                        Thread.sleep(3000);
                         int waitcount = 0;
-                        List<WebElement> UpdateAssessment = Utility.getLocatorList("//*[text()='" + array[1] + "']/..//a[@title='Assessment']", "xpath");
-                        while (UpdateAssessment.isEmpty() && waitcount < 15) {
-                            UpdateAssessment = Utility.getLocatorList("//*[text()='" + array[1] + "']/..//a[@title='Assessment']", "xpath");
+                        List<WebElement> UpdateAssessment = Utility.getLocatorList("//td[contains(text(),\""+enrolmentNumber+"\")]/..//button[@title=\"Edit\"]", "xpath");
+                        while (UpdateAssessment.isEmpty() && waitcount < 100) {
+                            UpdateAssessment = Utility.getLocatorList("//td[contains(text(),\""+enrolmentNumber+"\")]/..//button[@title=\"Edit\"]", "xpath");
                             Thread.sleep(200);
                             waitcount++;
                         }
                         UpdateAssessment.get(0).click();
                         waitcount = 0;
-                        List<WebElement> addAssessment = Utility.getLocatorList("buttonAdd", "id");
-                        while (addAssessment.size() == 0 && waitcount < 15) {
-                            addAssessment = Utility.getLocatorList("buttonAdd", "id");
+                        List<WebElement> addAssessment = Utility.getLocatorList("//button[text()='Add Assessment']", "xpath");
+                        while (addAssessment.isEmpty() && waitcount < 100) {
+                            addAssessment = Utility.getLocatorList("//button[text()='Add Assessment']", "xpath");
                             Thread.sleep(200);
                             waitcount++;
                         }
+                        Thread.sleep(3000);
                         addAssessment.get(0).click();
+                        Thread.sleep(5000);
+                        Utility.getLocator("affected_part_1_chosen", "id").click();
+                        Utility.getLocator("#affected_part_1_chosen input", "css").sendKeys("Other", Keys.ENTER);
+                        /*Select select = new Select(Utility.getLocator("affected_part_1", "id"));
+                        select.selectByVisibleText("Other");*/
+                        Utility.getLocator("affected_part_other_1", "id").sendKeys(affectedPart);
+                        Utility.getLocator("diagnosis_1", "id").sendKeys(diagnosis);
+                        Utility.getLocator("assessment_document", "id").sendKeys(filePath);
+                        Utility.getLocator("assessment_remark_1", "id").sendKeys(remark);
+                        Select select = new Select(Utility.getLocator("assessment_status", "id"));
+                        select.selectByVisibleText(assessmentStatus);
+                        Utility.getLocator("//*[@id='frmedit']//button[@title='Save']", "xpath").click();
                         Thread.sleep(2000);
-                        Select select = new Select(Utility.getLocator("disability_type_0", "id"));
-                        select.selectByVisibleText(array[2]);
-                        Utility.getLocator("affected_part_0", "id").sendKeys(array[3]);
-                        Utility.getLocator("diagnosis_0", "id").sendKeys(array[4]);
-                        Utility.getLocator("assessment_document_0", "id").sendKeys(System.getProperty("user.dir")+File.separator+"images"+File.separator + array[0] + ".jpeg");
-                        Utility.getLocator("remark_0", "id").sendKeys(array[5]);
-                        Utility.getLocator("add_assessment_0", "id").click();
+                    } catch (Exception e) {
+                        System.out.println("Error with ==> "+enrolmentNumber);
+                        e.printStackTrace();
+                    }
+                    try {
+                        Utility.driver.get("https://swavlambancard.gov.in/admin/Assignmedicalboard");
 
-                        Utility.driver.get("https://www.swavlambancard.gov.in/admin/pwd/medicalboardlist");
-                        Utility.getLocator("//*[text()='" + array[1] + "']/..//a[@title='Assign Medical Board']", "xpath").click();
+                        WebElement search = Utility.getLocator("listPwdapplications_application_number", "id");
+                        search.clear();
+                        search.sendKeys(enrolmentNumber);
+                        search.sendKeys(Keys.ENTER);
+                        Thread.sleep(5000);
+                        Utility.getLocator("//td[contains(text(),'" + enrolmentNumber + "')]/..//a[@title=\"Assign Medical Board\"]", "xpath").click();
+                        Thread.sleep(2000);
+                        Select select = new Select(Utility.getLocator("model_district_code", "id"));
+                        select.selectByVisibleText(district);
+                        Thread.sleep(2000);
                         select = new Select(Utility.getLocator("board_id", "id"));
-                        select.selectByVisibleText(array[6]);
-                        try {
-                            Utility.getLocator("//*[text()='" + array[7] + "']/input", "xpath").click();
-                        }catch (Exception e){
-                            Utility.getLocator("//*[text()='" + array[7] + "']/../input", "xpath").click();
-                        }
-
+                        select.selectByVisibleText(assignMedicalBord);
+                        Utility.getLocator("//*[contains(text(),'" + doctorName + "')]/../input", "xpath").click();
                         Utility.getLocator("//input[@value='Assign']", "xpath").click();
-                        Thread.sleep(4000);
-                        Utility.driver.get("https://www.swavlambancard.gov.in/admin/pwd/medicalboardrecommandation");
-                        Utility.getLocator("//td[text()='" + array[1] + "']/../td[6]/a[@title='Update Recommendation']", "xpath").click();
-                        Utility.getLocator("disability_in_percent", "id").sendKeys(array[8] + Keys.TAB);
-                        select = new Select(Utility.getLocator("disability_condition_master_id", "id"));
-                        select.selectByVisibleText(array[9]);
-                        select = new Select(Utility.getLocator("disability_condition_category", "id"));
-                        select.selectByVisibleText(array[10]);
+                        Thread.sleep(3000);
+                        Actions actions = new Actions(Utility.driver);
+                        actions.sendKeys(Keys.TAB).build().perform();
+                        actions.sendKeys(Keys.SPACE).build().perform();
                         Thread.sleep(2000);
-                        if (array[10].equalsIgnoreCase("Temporary")) {
-                            select = new Select(Utility.getLocator("//*[contains(@id,'reassesment_require')]", "xpath"));
-                            select.selectByVisibleText(array[11]);
+                    }catch (Exception e) {
+                            System.out.println("Error with ==> "+enrolmentNumber);
+                            e.printStackTrace();
+                        }
+                        try {
+                        Utility.driver.get("https://swavlambancard.gov.in/admin/Medicalboardrecommendation");
+
+                        WebElement search = Utility.getLocator("listPwdapplications_application_number", "id");
+                        search.clear();
+                        search.sendKeys(enrolmentNumber);
+                        search.sendKeys(Keys.ENTER);
+                        Thread.sleep(3000);
+
+                        Utility.getLocator("//td[contains(text(),'"+enrolmentNumber+"')]/..//button[@title=\"Medical Board Recommendation\"]", "xpath").click();
+                        Utility.getLocator("add_disability_type_id_1", "id").sendKeys(disabilityPercent + Keys.TAB);
+                        Thread.sleep(1000);
+                        Select select = new Select(Utility.getLocator("//*[@name='disability_condition']", "xpath"));
+                        select.selectByVisibleText(disabilityCondition);
+                        select = new Select(Utility.getLocator("disability_type_pt1", "id"));
+                        select.selectByVisibleText(permanentTemporary);
+                        Thread.sleep(2000);
+                        if (permanentTemporary.equalsIgnoreCase("Temporary")) {
+                            select = new Select(Utility.getLocator("reassessment_require1", "id"));
+                            select.selectByVisibleText(reassessmentRequire);
                             Thread.sleep(1000);
-                            if (array[11].equalsIgnoreCase("Yes")) {
-                                select = new Select(Utility.getLocator("//*[contains(@id,'reassesment_review_year')][2]", "xpath"));
-                                select.selectByVisibleText(array[12]);
-                                select = new Select(Utility.getLocator("//*[contains(@id,'reassesment_review_month')][2]", "xpath"));
-                                select.selectByVisibleText(array[13]);
+                            if (reassessmentRequire.equalsIgnoreCase("Yes")) {
+                                WebElement element = Utility.getLocator("valid_till1", "id");
+                                JavascriptExecutor js = (JavascriptExecutor) Utility.driver;
+                                js.executeScript("arguments[0].removeAttribute('readonly')", element);
+                                element.clear();
+                                element.sendKeys(reassementDate);
                             }
                         }
-                        Utility.getLocator("recommendation_document", "id").sendKeys(System.getProperty("user.dir")+File.separator+"images"+File.separator+ array[0] + ".jpeg");
-                        Utility.getLocator("remark", "id").sendKeys(array[14]);
-                        Utility.getLocator("recommandation_save", "id").click();
+                        Utility.getLocator("recommendation_document", "id").sendKeys(filePath);
+                        Utility.getLocator("remark_1", "id").sendKeys(remark);
+                        List<WebElement> elements = Utility.getLocatorList("affected_part1", "id");
+                        if (!elements.isEmpty()) {
+                            elements.get(0).sendKeys(affectedPart);
+                        }
+                        elements = Utility.getLocatorList("diagnosis1", "id");
+                            if (!elements.isEmpty()) {
+                                elements.get(0).sendKeys(diagnosis);
+                            }
+                        Utility.getLocator("//button[@title='Add Recommendation']", "xpath").click();
                         Thread.sleep(2000);
-                        data = br.readLine();
-                        array = data.split("-->");
-                    } catch (Exception e) {
-                        writeInNotePad("Error with ==> "+array[1]);
-                        data = br.readLine();
-                        array =     data.split("-->");
+                    }catch (Exception e){
+                        writeInNotePad("Error with ==> "+enrolmentNumber);
+                        e.printStackTrace();
                     }
 
                 } catch (Exception e) {
