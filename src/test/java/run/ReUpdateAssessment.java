@@ -25,7 +25,7 @@ public class ReUpdateAssessment {
         Utility.driver.manage().window().maximize();
         Utility.getLocator("email", "id").sendKeys("cmo.varanasi2014@gmail.com");
         Utility.getLocator("pwd", "id").sendKeys("Varanasi@800");
-        ArrayList<HashMap<String, String>> data = new JSONToMap().getData();
+        ArrayList<HashMap<String, String>> data = new JSONToMap().getData("");
         List<String> enrolmentNumbers = new ArrayList<>();
         try (BufferedReader br = new BufferedReader(new FileReader("Output.txt"))) {
             String line;

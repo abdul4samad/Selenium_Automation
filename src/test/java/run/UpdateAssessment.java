@@ -1,5 +1,6 @@
 package run;
 
+import com.google.gson.Gson;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
@@ -27,7 +28,7 @@ public class UpdateAssessment {
         Utility.driver.manage().window().maximize();
         Utility.getLocator("email", "id").sendKeys("cmo.varanasi2014@gmail.com");
         Utility.getLocator("pwd", "id").sendKeys("Varanasi@800");
-        ArrayList<HashMap<String, String>> data = new JSONToMap().getData();
+        ArrayList<HashMap<String, String>> data = new JSONToMap().getData("UDIDResponse");
         try {
             for (HashMap<String, String> map : data) {
                 String date = map.get("Date"),
@@ -91,6 +92,9 @@ public class UpdateAssessment {
                         Utility.getLocator("//*[@id='frmedit']//button[@title='Save']", "xpath").click();
                         Thread.sleep(2000);
                     } catch (Exception e) {
+                        if(!map.containsKey("Step")){
+                            map.put("Step", "1");
+                        }
                         System.out.println("Error with ==> "+enrolmentNumber);
                         e.printStackTrace();
                     }
@@ -117,6 +121,9 @@ public class UpdateAssessment {
                         actions.sendKeys(Keys.SPACE).build().perform();
                         Thread.sleep(2000);
                     }catch (Exception e) {
+                        if(!map.containsKey("Step")){
+                            map.put("Step", "2");
+                        }
                             System.out.println("Error with ==> "+enrolmentNumber);
                             e.printStackTrace();
                         }
@@ -162,7 +169,10 @@ public class UpdateAssessment {
                         Utility.getLocator("//button[@title='Add Recommendation']", "xpath").click();
                         Thread.sleep(2000);
                     }catch (Exception e){
-                        writeInNotePad("Error with ==> "+enrolmentNumber);
+                            if(!map.containsKey("Step")){
+                                map.put("Step", "3");
+                            }
+                        writeInNotePad(map);
                         e.printStackTrace();
                     }
 
@@ -176,13 +186,14 @@ public class UpdateAssessment {
         }
     }
 
-    static String fileName = "Output.txt";
-    public static void writeInNotePad (String text){
-
+    static String fileName = "UDIDResponseError.json";
+    public static void writeInNotePad (HashMap<String, String> map){
+        Gson gson = new Gson();
         try {
             FileWriter fw = new FileWriter(fileName, true); // true to append
             BufferedWriter bw = new BufferedWriter(fw);
-            bw.write(text);
+            bw.write(gson.toJson(map));
+            bw.write(",");
             bw.newLine();
             bw.close();
             System.out.println("Text has been written to " + fileName);

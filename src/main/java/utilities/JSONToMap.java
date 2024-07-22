@@ -11,10 +11,10 @@ import java.util.HashMap;
 
 public class JSONToMap {
 
-    public ArrayList<HashMap<String, String>> getData() {
+    public ArrayList<HashMap<String, String>> getData(String filename) {
         ArrayList<HashMap<String, String>> list = new ArrayList<>();
 
-        try (FileReader reader = new FileReader("Sheet.json")) {
+        try (FileReader reader = new FileReader(filename+".json")) {
             JSONArray jsonArray = new JSONArray(new JSONTokener(reader));
 
             for (int i = 0; i < jsonArray.length(); i++) {

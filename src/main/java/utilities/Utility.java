@@ -70,36 +70,53 @@ public class Utility {
      *************************************************************************************************/
      public static WebElement getLocator(String key, String type){
 
-    		 		fluentWait(10, 200, key, type);
+		 while (getLoaderStatus()){
+			 //do nothing
+		 }
 
-                   if (type.equalsIgnoreCase("id")) {
-                         loct = driver.findElement(By.id(key));
-                         //ElementHighlight(loct);
-                   } else if (type.equalsIgnoreCase("xpath")) {
-                         loct = driver.findElement(By.xpath(key));
-                         ElementHighlight(loct);
-                   } else if (type.equalsIgnoreCase("lnktxt")) {
-                         loct = driver.findElement(By.linkText(key));
-                         //ElementHighlight(loct);
-                   } else if (type.equalsIgnoreCase("name")) {
-                         loct = driver.findElement(By.name(key));
-                         //ElementHighlight(loct);
-                   } else if (type.equalsIgnoreCase("partlnktxt")) {
-                         loct = driver.findElement(By.partialLinkText(key));
-                         ElementHighlight(loct);
-                   } else if (type.equalsIgnoreCase("css")) {
-                         loct = driver.findElement(By.cssSelector(key));
-                         ElementHighlight(loct);
-                   } else if (type.equalsIgnoreCase("tagname")) {
-                         loct = driver.findElement(By.tagName(key));
-                         ElementHighlight(loct);
-                   } else {
-                	   loct = driver.findElement(By.xpath(key));
-                       ElementHighlight(loct);
-                	   //System.out.println("Locators not matched");
-                   }
+		 if (!key.equalsIgnoreCase("global-loader")){
+			 fluentWait(10, 200, key, type);
+		 }
+
+		   if (type.equalsIgnoreCase("id")) {
+				 loct = driver.findElement(By.id(key));
+				 //ElementHighlight(loct);
+		   } else if (type.equalsIgnoreCase("xpath")) {
+				 loct = driver.findElement(By.xpath(key));
+				 ElementHighlight(loct);
+		   } else if (type.equalsIgnoreCase("lnktxt")) {
+				 loct = driver.findElement(By.linkText(key));
+				 //ElementHighlight(loct);
+		   } else if (type.equalsIgnoreCase("name")) {
+				 loct = driver.findElement(By.name(key));
+				 //ElementHighlight(loct);
+		   } else if (type.equalsIgnoreCase("partlnktxt")) {
+				 loct = driver.findElement(By.partialLinkText(key));
+				 ElementHighlight(loct);
+		   } else if (type.equalsIgnoreCase("css")) {
+				 loct = driver.findElement(By.cssSelector(key));
+				 ElementHighlight(loct);
+		   } else if (type.equalsIgnoreCase("tagname")) {
+				 loct = driver.findElement(By.tagName(key));
+				 ElementHighlight(loct);
+		   } else {
+			   loct = driver.findElement(By.xpath(key));
+			   ElementHighlight(loct);
+			   //System.out.println("Locators not matched");
+		   }
+
 		return loct;
 
+  }
+
+  public static boolean getLoaderStatus(){
+	  try {
+		  Thread.sleep(1000);
+		  WebElement loader = driver.findElement(By.id("global-loader"));
+		  return loader.isDisplayed();
+	  }catch(Exception e){
+		  return false;
+	  }
   }
 
 	public  WebElement getLocatorWithoutWait(String key, String type){
@@ -355,7 +372,8 @@ public class Utility {
 		System.out.println("Under fluent wait for: "+key);
 		Wait<WebDriver> fluentWait = new FluentWait<>(driver).withTimeout(Duration.ofSeconds(duration))
 		        .pollingEvery(Duration.ofMillis(pollingInMilliSec)).ignoring(NoSuchElementException.class)
-		        .ignoring(StaleElementReferenceException.class).ignoring(WebDriverException.class);
+		        .ignoring(StaleElementReferenceException.class).ignoring(WebDriverException.class).ignoring(ElementNotInteractableException.class)
+				.ignoring(ElementClickInterceptedException.class);
 
 		if (type.equalsIgnoreCase("id")) {
 			fluentWait.until(ExpectedConditions.presenceOfElementLocated(By.id(key)));
