@@ -37,16 +37,13 @@ public class VerifyApplication {
                 Select select;
                 try {
                     try {
-                        Utility.driver.get("https://swavlambancard.gov.in/admin/pwdapplications?elist%5Bhospital_treating_state_code%5D=&elist%5Bcurrent_subdistrict_code%5D=&elist%5Bcurrent_village_code%5D=&elist%5Bapplication_status%5D=&id=&task=&sort_field=Pwdapplications.id&sort_type=DESC&removeid=&limit=10&page=1&list%5BPwdapplications.application_number%5D="+enrolmentNumber+"&list%5BPwdapplications.full_name%5D=&list%5BPwdapplications.aadhaar_no%5D=&list%5BPwdapplications.gender%5D=&list%5BPwdapplicationstatus.status_name%5D=&list%5BPwdapplicationtype.type%5D=");
-                        int waitcount = 0;
-                        List<WebElement> UpdateAssessment = Utility.getLocatorList("//td[contains(text(),\"" + enrolmentNumber + "\")]/..//button[@title=\"Verify\"]", "xpath");
-                        while (UpdateAssessment.isEmpty() && waitcount < 150) {
-                            UpdateAssessment = Utility.getLocatorList("//td[contains(text(),\"" + enrolmentNumber + "\")]/..//button[@title=\"Verify\"]", "xpath");
-                            Thread.sleep(200);
-                            waitcount++;
-                        }
-                        UpdateAssessment.get(0).click();
+                        Utility.driver.get("https://swavlambancard.gov.in/admin/pwdapplications");
+                        WebElement search = Utility.getLocator("listPwdapplications_application_number", "id");
+                        search.clear();
+                        search.sendKeys(enrolmentNumber);
+                        search.sendKeys(Keys.ENTER);
                         Thread.sleep(2000);
+                        Utility.getLocator("//td[contains(text(),\"" + enrolmentNumber + "\")]/..//button[@title=\"Verify\"]", "xpath").click();
                         select = new Select(Utility.getLocator("id_application_status", "id"));
                         select.selectByVisibleText("Verify");
                         Utility.getLocator("save_form_verify", "id").click();
@@ -69,15 +66,8 @@ public class VerifyApplication {
                         search.clear();
                         search.sendKeys(enrolmentNumber);
                         search.sendKeys(Keys.ENTER);
-                        Thread.sleep(3000);
-                        int waitcount = 0;
-                        List<WebElement> UpdateAssessment = Utility.getLocatorList("//td[contains(text(),\"" + enrolmentNumber + "\")]/..//button[@title=\"Edit\"]", "xpath");
-                        while (UpdateAssessment.isEmpty() && waitcount < 100) {
-                            UpdateAssessment = Utility.getLocatorList("//td[contains(text(),\"" + enrolmentNumber + "\")]/..//button[@title=\"Edit\"]", "xpath");
-                            Thread.sleep(200);
-                            waitcount++;
-                        }
-                        UpdateAssessment.get(0).click();
+                        Thread.sleep(2000);
+                        Utility.getLocator("//td[contains(text(),\"" + enrolmentNumber + "\")]/..//button[@title=\"Edit\"]", "xpath").click();
                         select = new Select(Utility.getLocator("//select[@data-id='2']", "xpath"));
                         select.selectByVisibleText(speciality);
 
@@ -95,14 +85,7 @@ public class VerifyApplication {
                     try {
                         Utility.driver.get("https://swavlambancard.gov.in/admin/pwdapplications?elist%5Bhospital_treating_state_code%5D=&elist%5Bcurrent_subdistrict_code%5D=&elist%5Bcurrent_village_code%5D=&elist%5Bapplication_status%5D=&id=&task=&sort_field=Pwdapplications.id&sort_type=DESC&removeid=&limit=10&page=1&list%5BPwdapplications.application_number%5D="+enrolmentNumber+"&list%5BPwdapplications.full_name%5D=&list%5BPwdapplications.aadhaar_no%5D=&list%5BPwdapplications.gender%5D=&list%5BPwdapplicationstatus.status_name%5D=&list%5BPwdapplicationtype.type%5D=");
                         Thread.sleep(2000);
-                        int waitcount = 0;
-                        List<WebElement> UpdateAssessment = Utility.getLocatorList("//td[contains(text(),\"" + enrolmentNumber + "\")]/..//button[@title=\"View\"]", "xpath");
-                        while (UpdateAssessment.isEmpty() && waitcount < 100) {
-                            UpdateAssessment = Utility.getLocatorList("//td[contains(text(),\"" + enrolmentNumber + "\")]/..//button[@title=\"View\"]", "xpath");
-                            Thread.sleep(200);
-                            waitcount++;
-                        }
-                        UpdateAssessment.get(0).click();
+                        Utility.getLocator("//td[contains(text(),\"" + enrolmentNumber + "\")]/..//button[@title=\"View\"]", "xpath").click();
                         closeCurrentAndSwitchToOpenedWindow();
                         Utility.getLocator("//a[text()='Download Referral Sheet']", "xpath").click();
                         Thread.sleep(2000);

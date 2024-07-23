@@ -69,13 +69,13 @@ public class Utility {
      *         locator type.
      *************************************************************************************************/
      public static WebElement getLocator(String key, String type){
-
-		 while (getLoaderStatus()){
-			 //do nothing
+		 boolean isLoaderDisplayed = getLoaderStatus();
+		 while (isLoaderDisplayed){
+			 isLoaderDisplayed = getLoaderStatus();
 		 }
 
 		 if (!key.equalsIgnoreCase("global-loader")){
-			 fluentWait(10, 200, key, type);
+			 fluentWait(15, 200, key, type);
 		 }
 
 		   if (type.equalsIgnoreCase("id")) {
@@ -111,7 +111,7 @@ public class Utility {
 
   public static boolean getLoaderStatus(){
 	  try {
-		  Thread.sleep(1000);
+		  Thread.sleep(300);
 		  WebElement loader = driver.findElement(By.id("global-loader"));
 		  return loader.isDisplayed();
 	  }catch(Exception e){
@@ -159,8 +159,9 @@ public class Utility {
 	 * @return	List of Web Elements.
 	 ************************************************************************/
       public static List<WebElement> getLocatorList(String key, String type){
-		  while (getLoaderStatus()){
-			  //do nothing
+		  boolean isLoaderDisplayed = getLoaderStatus();
+		  while (isLoaderDisplayed){
+			  isLoaderDisplayed = getLoaderStatus();
 		  }
     	  List<WebElement> listOfElements = null;
              try{
