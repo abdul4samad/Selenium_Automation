@@ -159,6 +159,9 @@ public class Utility {
 	 * @return	List of Web Elements.
 	 ************************************************************************/
       public static List<WebElement> getLocatorList(String key, String type){
+		  while (getLoaderStatus()){
+			  //do nothing
+		  }
     	  List<WebElement> listOfElements = null;
              try{
              		//fluentWait(1, 500, key, type);
