@@ -1,75 +1,86 @@
 package run;
 
+import com.google.gson.Gson;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.support.ui.Select;
+import utilities.JSONToMap;
 import utilities.Utility;
 
 import java.io.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Set;
 
 public class GenerateCertificate {
 
     public static void main(String[] args) throws InterruptedException {
 
-        Utility.driver = new FirefoxDriver();
-        Utility.driver.get("https://www.swavlambancard.gov.in/admin/account/login");
+        FirefoxOptions options = new FirefoxOptions();
+        options.addPreference("browser.download.folderList", 2);
+        options.addPreference("browser.download.dir", System.getProperty("user.dir")+"/downloads");
+        Utility.driver = new FirefoxDriver(options);
+        Utility.driver.get("https://swavlambancard.gov.in/admin/login");
         Utility.driver.manage().window().maximize();
         Utility.getLocator("email", "id").sendKeys("cmo.varanasi2014@gmail.com");
-        Utility.getLocator("password", "id").sendKeys("Varanasi@832");
-        Thread.sleep(15000);
-        Utility.driver.get("https://www.swavlambancard.gov.in/admin/pwd/allapplicationlist");
-        Thread.sleep(5000);
-        String data="";
+        Utility.getLocator("pwd", "id").sendKeys("Varanasi@800");
+        ArrayList<HashMap<String, String>> data = new JSONToMap().getData("Verify");
         try {
-            FileReader fr = new FileReader(new File("DataFile.txt"));
-            BufferedReader br = new BufferedReader(fr);
-            data = br.readLine();
-            String array[] = data.split("-->");
-            while (!data.isEmpty()) {
+            for (HashMap<String, String> map : data) {
+                String enrolmentNumber = "091870000024060010074";//map.get("Enrolment Number");
+                Select select;
                 try {
-                    Utility.driver.get("https://www.swavlambancard.gov.in/admin/pwd/generateudidlist");
-                    WebElement search = Utility.getLocator("//*[@id=\"generateudidDataTable_filter\"]/label/input","xpath");
-                    search.clear();
-                    search.sendKeys(array[1]+ Keys.BACK_SPACE);
-                    Thread.sleep(1000);
-                    search.sendKeys(Keys.CONTROL+"z");
-                    Thread.sleep(2000);
-                    Utility.getLocator("//*[text()='"+array[1]+"']/../td[6]/a[@title='Generate UDID']","xpath").click();
-                    Select select = new Select(Utility.getLocator(".verification_type","css"));
-                    select.selectByVisibleText("Normal");
-                    Thread.sleep(1000);
-                    Utility.getLocator(".submit_btn","css").click();
-                    Thread.sleep(1000);
-                    if(!Utility.getLocator(".successMessage","css").getText().equalsIgnoreCase("Disability certificate and UDID card generated successfully.")){
-                        writeInNotePad(array[1]+" Failed");
+                    try {
+                        Utility.driver.get("https://swavlambancard.gov.in/admin/downloadCertificates");
+                        WebElement search = Utility.getLocator("listPwdapplications_application_number", "id");
+                        search.clear();
+                        search.sendKeys(enrolmentNumber);
+                        search.sendKeys(Keys.ENTER);
+                        Thread.sleep(2000);
+                        Utility.getLocator("//td[contains(text(),\"" + enrolmentNumber + "\")]/..//button[@title=\"Certificate Preview & Generate\"]", "xpath").click();
+                        Utility.getLocator("//button[@value='Generate Certificate']", "xpath").click();
+                        renameDownloadedPDF(enrolmentNumber+"_cert");
+                    } catch (Exception e) {
+                        if(!map.containsKey("Step")){
+                            map.put("Step", "1");
+                        }
+                        e.printStackTrace();
+                        System.out.println("Error with ==> " + enrolmentNumber);
                     }
 
-                    data = br.readLine();
-                    array = data.split("-->");
                 } catch (Exception e) {
                     e.printStackTrace();
-                    writeInNotePad("issue with data:" + data);
-                    data = br.readLine();
-                    array = data.split("-->");
                 }
             }
 
-    }catch (Exception e){
-            e.printStackTrace();
+        } catch (Exception e) {
+            System.out.println("End");
         }
     }
-        static String fileName = "GenerateResult.txt";
-        public static void writeInNotePad (String text){
-            try {
-                FileWriter fw = new FileWriter(fileName, true); // true to append
-                BufferedWriter bw = new BufferedWriter(fw);
-                bw.write(text);
-                bw.newLine();
-                bw.close();
-                System.out.println("Text has been written to " + fileName);
-            } catch (Exception e) {
-                System.err.println("Error: " + e.getMessage());
-            }
+
+    static String fileName = "GenerateError.json";
+    public static void writeInNotePad (HashMap<String, String> map){
+        Gson gson = new Gson();
+        try {
+            FileWriter fw = new FileWriter(fileName, true); // true to append
+            BufferedWriter bw = new BufferedWriter(fw);
+            bw.write(gson.toJson(map));
+            bw.write(",");
+            bw.newLine();
+            bw.close();
+            System.out.println("Text has been written to " + fileName);
+        } catch (Exception e) {
+            System.err.println("Error: " + e.getMessage());
         }
     }
+
+    public static void renameDownloadedPDF(String fileName) {
+        File file = new File(System.getProperty("user.dir")+"/downloads/ReferralSheet.pdf");
+        if (file.exists()) {
+            file.renameTo(new File(System.getProperty("user.dir")+"/downloads/"+fileName+".pdf"));
+        }
+    }
+}
