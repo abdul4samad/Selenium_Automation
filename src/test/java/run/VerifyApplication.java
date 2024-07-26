@@ -43,16 +43,16 @@ public class VerifyApplication {
                         search.sendKeys(enrolmentNumber);
                         search.sendKeys(Keys.ENTER);
                         Thread.sleep(2000);
-                        Utility.getLocator("//td[contains(text(),\"" + enrolmentNumber + "\")]/..//button[@title=\"Verify\"]", "xpath").click();
+                        Utility.clickByJavaScript(Utility.getLocator("//td[contains(text(),\"" + enrolmentNumber + "\")]/..//button[@title=\"Verify\"]", "xpath"));
                         select = new Select(Utility.getLocator("id_application_status", "id"));
                         select.selectByVisibleText("Verify");
-                        Utility.getLocator("save_form_verify", "id").click();
+                        Utility.clickByJavaScript(Utility.getLocator("save_form_verify", "id"));
                         List<WebElement> checkboxes = Utility.getLocatorList("#confirmation_view input", "css");
                         for (WebElement checkbox : checkboxes) {
                             checkbox.click();
                         }
-                        Utility.getLocator("confirm_button", "id").click();
-
+                        Utility.clickByJavaScript(Utility.getLocator("confirm_button", "id"));
+                        Thread.sleep(2000);
                     } catch (Exception e) {
                         if(!map.containsKey("Step")){
                             map.put("Step", "1");
@@ -67,13 +67,13 @@ public class VerifyApplication {
                         search.sendKeys(enrolmentNumber);
                         search.sendKeys(Keys.ENTER);
                         Thread.sleep(2000);
-                        Utility.getLocator("//td[contains(text(),\"" + enrolmentNumber + "\")]/..//button[@title=\"Edit\"]", "xpath").click();
+                        Utility.clickByJavaScript(Utility.getLocator("//td[contains(text(),\"" + enrolmentNumber + "\")]/..//button[@title=\"Edit\"]", "xpath"));
                         select = new Select(Utility.getLocator("//select[@data-id='2']", "xpath"));
                         select.selectByVisibleText(speciality);
 
                         select = new Select(Utility.getLocator("doctor_id_2", "id"));
                         select.selectByVisibleText(specialist);
-                        Utility.getLocator("//*[@id='frmedit']//button[@title='Save']", "xpath").click();
+                        Utility.clickByJavaScript(Utility.getLocator("//*[@id='frmedit']//button[@title='Save']", "xpath"));
                         Thread.sleep(2000);
                     } catch (Exception e) {
                         if(!map.containsKey("Step")){
@@ -85,9 +85,9 @@ public class VerifyApplication {
                     try {
                         Utility.driver.get("https://swavlambancard.gov.in/admin/pwdapplications?elist%5Bhospital_treating_state_code%5D=&elist%5Bcurrent_subdistrict_code%5D=&elist%5Bcurrent_village_code%5D=&elist%5Bapplication_status%5D=&id=&task=&sort_field=Pwdapplications.id&sort_type=DESC&removeid=&limit=10&page=1&list%5BPwdapplications.application_number%5D="+enrolmentNumber+"&list%5BPwdapplications.full_name%5D=&list%5BPwdapplications.aadhaar_no%5D=&list%5BPwdapplications.gender%5D=&list%5BPwdapplicationstatus.status_name%5D=&list%5BPwdapplicationtype.type%5D=");
                         Thread.sleep(2000);
-                        Utility.getLocator("//td[contains(text(),\"" + enrolmentNumber + "\")]/..//button[@title=\"View\"]", "xpath").click();
+                        Utility.clickByJavaScript(Utility.getLocator("//td[contains(text(),\"" + enrolmentNumber + "\")]/..//button[@title=\"View\"]", "xpath"));
                         closeCurrentAndSwitchToOpenedWindow();
-                        Utility.getLocator("//a[text()='Download Referral Sheet']", "xpath").click();
+                        Utility.clickByJavaScript(Utility.getLocator("//a[text()='Download Referral Sheet']", "xpath"));
                         Thread.sleep(2000);
                         closeCurrentAndSwitchToOpenedWindow();
                         renameDownloadedPDF(enrolmentNumber);
