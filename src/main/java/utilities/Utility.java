@@ -75,7 +75,7 @@ public class Utility {
 		 }
 
 		 if (!key.equalsIgnoreCase("global-loader")){
-			 fluentWait(15, 200, key, type);
+			 fluentWait(20, 200, key, type);
 		 }
 
 		   if (type.equalsIgnoreCase("id")) {
@@ -481,6 +481,19 @@ public class Utility {
     	Actions actions = new Actions(driver);
     	actions.moveToElement(getLocator(key, type)).build().perform();
     	System.out.println("Element move to the element: "+key);
+	 }
+
+	 public static void clickElement(WebElement element) {
+		 try {
+			 element.click();
+		 }catch (ElementClickInterceptedException e){
+			 System.out.println("Element is not clickable");
+			 boolean isLoaderDisplayed = getLoaderStatus();
+			 while (isLoaderDisplayed){
+				 isLoaderDisplayed = getLoaderStatus();
+			 }
+			 element.click();
+		 }
 	 }
 
 }

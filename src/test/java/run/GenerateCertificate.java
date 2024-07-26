@@ -27,7 +27,7 @@ public class GenerateCertificate {
         Utility.driver.manage().window().maximize();
         Utility.getLocator("email", "id").sendKeys("cmo.varanasi2014@gmail.com");
         Utility.getLocator("pwd", "id").sendKeys("Varanasi@800");
-        ArrayList<HashMap<String, String>> data = new JSONToMap().getData("Verify");
+        ArrayList<HashMap<String, String>> data = new JSONToMap().getData("UDIDResponse");
         try {
             for (HashMap<String, String> map : data) {
                 String enrolmentNumber = map.get("Enrolment Number");
@@ -40,9 +40,10 @@ public class GenerateCertificate {
                         search.sendKeys(enrolmentNumber);
                         search.sendKeys(Keys.ENTER);
                         Thread.sleep(2000);
-                        Utility.getLocator("//td[contains(text(),\"" + enrolmentNumber + "\")]/..//button[@title=\"Certificate Preview & Generate\"]", "xpath").click();
+                        Utility.clickElement(Utility.getLocator("//td[contains(text(),\"" + enrolmentNumber + "\")]/..//button[@title=\"Certificate Preview & Generate\"]", "xpath"));
                         Utility.getLocator("//button[@value='Generate Certificate']", "xpath").click();
                         renameDownloadedPDF(enrolmentNumber+"_cert");
+                        closeCurrentAndSwitchToOpenedWindow();
                     } catch (Exception e) {
                         if(!map.containsKey("Step")){
                             map.put("Step", "1");
@@ -62,25 +63,23 @@ public class GenerateCertificate {
     }
 
     static String fileName = "GenerateError.json";
-    public static void writeInNotePad (HashMap<String, String> map){
-        Gson gson = new Gson();
-        try {
-            FileWriter fw = new FileWriter(fileName, true); // true to append
-            BufferedWriter bw = new BufferedWriter(fw);
-            bw.write(gson.toJson(map));
-            bw.write(",");
-            bw.newLine();
-            bw.close();
-            System.out.println("Text has been written to " + fileName);
-        } catch (Exception e) {
-            System.err.println("Error: " + e.getMessage());
-        }
-    }
 
     public static void renameDownloadedPDF(String fileName) {
         File file = new File(System.getProperty("user.dir")+"/downloads/ReferralSheet.pdf");
         if (file.exists()) {
             file.renameTo(new File(System.getProperty("user.dir")+"/downloads/"+fileName+".pdf"));
+        }
+    }
+
+    public static void closeCurrentAndSwitchToOpenedWindow() {
+        String currentWindowHandle = Utility.driver.getWindowHandle();
+        Utility.driver.close();
+        Set<String> windowHandles = Utility.driver.getWindowHandles();
+        for (String windowHandle : windowHandles) {
+            if (!currentWindowHandle.equals(windowHandle)) {
+                Utility.driver.switchTo().window(windowHandle);
+                break;
+            }
         }
     }
 }
