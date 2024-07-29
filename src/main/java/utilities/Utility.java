@@ -105,6 +105,8 @@ public class Utility {
 			   //System.out.println("Locators not matched");
 		   }
 
+		   scrollTillView(loct);
+
 		return loct;
 
   }
