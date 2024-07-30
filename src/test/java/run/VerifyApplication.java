@@ -1,5 +1,6 @@
 package run;
 
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.firefox.FirefoxDriver;
@@ -29,6 +30,7 @@ public class VerifyApplication {
         Utility.getLocator("email", "id").sendKeys("cmo.varanasi2014@gmail.com");
         Utility.getLocator("pwd", "id").sendKeys("Varanasi@800");
         ArrayList<HashMap<String, String>> data = new JSONToMap().getData("Verify");
+        ((JavascriptExecutor) Utility.driver).executeScript("document.body.style.zoom='50%'");
         try {
             for (HashMap<String, String> map : data) {
                 String enrolmentNumber = map.get("Enrolment Number"),
