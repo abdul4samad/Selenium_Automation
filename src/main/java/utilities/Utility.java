@@ -319,7 +319,12 @@ public class Utility {
 		}catch (ElementClickInterceptedException e){
 			WebElement loader = driver.findElement(By.id("global-loader"));
 			((JavascriptExecutor) driver).executeScript("arguments[0].remove();", loader);
-			((JavascriptExecutor) driver).executeScript(
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException ex) {
+                throw new RuntimeException(ex);
+            }
+            ((JavascriptExecutor) driver).executeScript(
 					"arguments[0].click();", element);
 		}
 
