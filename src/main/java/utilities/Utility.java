@@ -69,10 +69,6 @@ public class Utility {
      *         locator type.
      *************************************************************************************************/
      public static WebElement getLocator(String key, String type){
-		 boolean isLoaderDisplayed = getLoaderStatus();
-		 while (isLoaderDisplayed){
-			 isLoaderDisplayed = getLoaderStatus();
-		 }
 
 		 if (!key.equalsIgnoreCase("global-loader")){
 			 fluentWait(20, 200, key, type);
@@ -317,9 +313,15 @@ public class Utility {
 	 ******************************************************************************************/
 	public static void clickByJavaScript(WebElement element) {
 		ElementHighlight(element);
-
-		((JavascriptExecutor) driver).executeScript(
-		"arguments[0].click();", element);
+		try {
+			((JavascriptExecutor) driver).executeScript(
+					"arguments[0].click();", element);
+		}catch (ElementClickInterceptedException e){
+			WebElement loader = driver.findElement(By.id("global-loader"));
+			((JavascriptExecutor) driver).executeScript("arguments[0].remove();", loader);
+			((JavascriptExecutor) driver).executeScript(
+					"arguments[0].click();", element);
+		}
 
 	}
 
