@@ -73,6 +73,9 @@ public class VerifyApplication {
                         search.sendKeys(Keys.ENTER);
                         Thread.sleep(2000);
                         Utility.clickByJavaScript(Utility.getLocator("//td[contains(text(),\"" + enrolmentNumber + "\")]/..//button[@title=\"Edit\"]", "xpath"));
+                        Thread.sleep(1000);
+                        WebElement loader = Utility.getLocator("global-loader", "id");
+                        ((JavascriptExecutor) Utility.driver).executeScript("arguments[0].remove();", loader);
                         select = new Select(Utility.getLocator("//select[@data-id='2']", "xpath"));
                         select.selectByVisibleText(speciality);
 
