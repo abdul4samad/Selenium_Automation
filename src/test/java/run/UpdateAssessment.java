@@ -82,12 +82,12 @@ public class UpdateAssessment {
                         try{
                             Utility.getLocator("affected_part_1_chosen", "id").click();
                             Utility.getLocator("#affected_part_1_chosen input", "css").sendKeys("Other", Keys.ENTER);
+                            Utility.getLocator("affected_part_other_1", "id").sendKeys(affectedPart);
                         }catch (Exception e){
-                            e.printStackTrace();
+                            Utility.getLocator("affected_part_1", "id").sendKeys(affectedPart);
                         }
                         /*Select select = new Select(Utility.getLocator("affected_part_1", "id"));
                         select.selectByVisibleText("Other");*/
-                        Utility.getLocator("affected_part_other_1", "id").sendKeys(affectedPart);
                         Utility.getLocator("diagnosis_1", "id").sendKeys(diagnosis);
                         Utility.getLocator("assessment_document", "id").sendKeys(filePath);
                         Utility.getLocator("assessment_remark_1", "id").sendKeys(remark);
