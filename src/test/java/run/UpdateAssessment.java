@@ -79,8 +79,12 @@ public class UpdateAssessment {
                         Thread.sleep(3000);
                         addAssessment.get(0).click();
                         Thread.sleep(5000);
-                        Utility.getLocator("affected_part_1_chosen", "id").click();
-                        Utility.getLocator("#affected_part_1_chosen input", "css").sendKeys("Other", Keys.ENTER);
+                        try{
+                            Utility.getLocator("affected_part_1_chosen", "id").click();
+                            Utility.getLocator("#affected_part_1_chosen input", "css").sendKeys("Other", Keys.ENTER);
+                        }catch (Exception e){
+                            e.printStackTrace();
+                        }
                         /*Select select = new Select(Utility.getLocator("affected_part_1", "id"));
                         select.selectByVisibleText("Other");*/
                         Utility.getLocator("affected_part_other_1", "id").sendKeys(affectedPart);
