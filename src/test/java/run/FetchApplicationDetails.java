@@ -67,7 +67,7 @@ public class FetchApplicationDetails {
                             "//*[@id=\"div-current_address\"]/div/span",
                             "//*[@id=\"div-current_pincode\"]/div/span",
                             "//*[@id=\"div-disability_type_id\"]/div/label/span",
-                            "//*[@id=\"div-disability_per\"]/div/span",
+                            "//h3[contains(text(),'Medical Board Recommendation Details')]/../../..//td[3]",
                             "//*[@id=\"div-hospital_treating_disability\"]/div/span"
                     );
 
