@@ -1,6 +1,7 @@
 package run;
 
 import com.google.gson.Gson;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.firefox.FirefoxDriver;
@@ -41,6 +42,9 @@ public class GenerateCertificate {
                         search.sendKeys(Keys.ENTER);
                         Thread.sleep(2000);
                         Utility.clickElement(Utility.getLocator("//td[contains(text(),\"" + enrolmentNumber + "\")]/..//button[@title=\"Certificate Preview & Generate\"]", "xpath"));
+                        Thread.sleep(2000);
+                        WebElement loader = Utility.getLocator("global-loader", "id");
+                        ((JavascriptExecutor) Utility.driver).executeScript("arguments[0].remove();", loader);
                         Utility.getLocator("//button[@value='Generate Certificate']", "xpath").click();
                         renameDownloadedPDF(enrolmentNumber+"_cert");
                         closeCurrentAndSwitchToOpenedWindow();
