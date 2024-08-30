@@ -76,7 +76,7 @@ public class VerifyApplication {
                         Thread.sleep(1000);
                         WebElement loader = Utility.getLocator("global-loader", "id");
                         ((JavascriptExecutor) Utility.driver).executeScript("arguments[0].remove();", loader);
-                        select = new Select(Utility.getLocator("//select[@data-id='2']", "xpath"));
+                        select = new Select(Utility.getLocator("specialities_2", "id"));
                         select.selectByVisibleText(speciality);
 
                         select = new Select(Utility.getLocator("doctor_id_2", "id"));
