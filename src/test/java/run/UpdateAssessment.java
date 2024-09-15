@@ -116,7 +116,11 @@ public class UpdateAssessment {
                         select.selectByVisibleText(district);
                         Thread.sleep(2000);
                         select = new Select(Utility.getLocator("board_id", "id"));
-                        select.selectByVisibleText(assignMedicalBord);
+                        if (assignMedicalBord.equalsIgnoreCase("ophthalmology MEDICAL BOARD, PT. DEEN DAYAL UPADHY")) {
+                            select.selectByValue("5169");
+                        } else{
+                            select.selectByVisibleText(assignMedicalBord);
+                        }
                         Utility.getLocator("//*[contains(text(),'" + doctorName + "')]/../input", "xpath").click();
                         Utility.getLocator("//input[@value='Assign']", "xpath").click();
                         Thread.sleep(3000);
