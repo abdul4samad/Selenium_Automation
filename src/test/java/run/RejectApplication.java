@@ -43,7 +43,7 @@ public class RejectApplication {
                         ((JavascriptExecutor) Utility.driver).executeScript("arguments[0].remove();", loader);
                         select = new Select(Utility.getLocator("id_application_status", "id"));
                         select.selectByVisibleText("Rejected");
-                        Utility.getLocator("//input[@value='Other']", "xpath").click();
+                        Utility.clickByJavaScript(Utility.getLocator("//input[@value='Other']", "xpath"));
                         Utility.getLocator("reject_remark_other", "id").sendKeys(otherComment);
                         Utility.clickByJavaScript(Utility.getLocator("save_form_verify", "id"));
                         Thread.sleep(2000);
