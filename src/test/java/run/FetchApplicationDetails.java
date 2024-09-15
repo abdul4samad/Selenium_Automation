@@ -68,7 +68,8 @@ public class FetchApplicationDetails {
                             "//*[@id=\"div-current_pincode\"]/div/span",
                             "//*[@id=\"div-disability_type_id\"]/div/label/span",
                             "//h3[contains(text(),'Medical Board Recommendation Details')]/../../..//td[3]",
-                            "//*[@id=\"div-hospital_treating_disability\"]/div/span"
+                            "//*[@id=\"div-hospital_treating_disability\"]/div/span",
+                            "//*[text()='Application submitted successfully']/../td[3]"
                     );
 
                     for (String xpath : xpaths) {
