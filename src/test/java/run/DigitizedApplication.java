@@ -29,7 +29,7 @@ public class DigitizedApplication {
         Utility.driver.manage().window().maximize();
         Utility.getLocator("email", "id").sendKeys("cmo.varanasi2014@gmail.com");
         Utility.getLocator("pwd", "id").sendKeys("Varanasi@800");
-        ArrayList<HashMap<String, String>> data = new JSONToMap().getData("Verify");
+        ArrayList<HashMap<String, String>> data = new JSONToMap().getData("Digitized");
         ((JavascriptExecutor) Utility.driver).executeScript("document.body.style.zoom='50%'");
         try {
             for (HashMap<String, String> map : data) {
@@ -56,6 +56,7 @@ public class DigitizedApplication {
                         }
                         e.printStackTrace();
                         System.out.println("Error with ==> " + enrolmentNumber);
+                        writeInNotePad(map);
                     }
                 } catch (Exception e) {
                     System.out.println("End");
@@ -63,6 +64,22 @@ public class DigitizedApplication {
             }
         }catch (Exception e) {
             System.out.println("End");
+        }
+    }
+
+    static String fileName = "VerifyError.json";
+    public static void writeInNotePad (HashMap<String, String> map){
+        Gson gson = new Gson();
+        try {
+            FileWriter fw = new FileWriter(fileName, true); // true to append
+            BufferedWriter bw = new BufferedWriter(fw);
+            bw.write(gson.toJson(map));
+            bw.write(",");
+            bw.newLine();
+            bw.close();
+            System.out.println("Text has been written to " + fileName);
+        } catch (Exception e) {
+            System.err.println("Error: " + e.getMessage());
         }
     }
 }
