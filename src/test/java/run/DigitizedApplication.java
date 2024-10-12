@@ -47,10 +47,11 @@ public class DigitizedApplication {
                         Thread.sleep(1000);
                         WebElement loader = Utility.getLocator("global-loader", "id");
                         ((JavascriptExecutor) Utility.driver).executeScript("arguments[0].remove();", loader);
+                        Thread.sleep(5000);
                         select = new Select(Utility.getLocator("id_application_status", "id"));
                         select.selectByVisibleText("Mark as Fresh");
                         Utility.clickByJavaScript(Utility.getLocator("save_form", "id"));
-                        Thread.sleep(5000);
+                        Thread.sleep(3000);
                     } catch (Exception e) {
                         if (!map.containsKey("Step")) {
                             map.put("Step", "1");
