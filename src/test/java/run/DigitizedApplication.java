@@ -43,11 +43,9 @@ public class DigitizedApplication {
                         search.sendKeys(enrolmentNumber);
                         search.sendKeys(Keys.ENTER);
                         Thread.sleep(2000);
-                        WebElement loader = Utility.getLocator("global-loader", "id");
-                        ((JavascriptExecutor) Utility.driver).executeScript("arguments[0].remove();", loader);
                         Utility.clickByJavaScript(Utility.getLocator("//td[contains(text(),\"" + enrolmentNumber + "\")]/..//button[@title=\"Verify\"]", "xpath"));
                         Thread.sleep(1000);
-                        loader = Utility.getLocator("global-loader", "id");
+                        WebElement loader = Utility.getLocator("global-loader", "id");
                         ((JavascriptExecutor) Utility.driver).executeScript("arguments[0].remove();", loader);
                         select = new Select(Utility.getLocator("id_application_status", "id"));
                         select.selectByVisibleText("Mark as Fresh");
