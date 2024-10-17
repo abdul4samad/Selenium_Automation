@@ -32,6 +32,8 @@ public class ResetApplication {
                     try {
                         String resetSearchURL = "https://swavlambancard.gov.in/admin/Restapplications?elist%5Bhospital_treating_state_code%5D=&elist%5Bcurrent_subdistrict_code%5D=&elist%5Bcurrent_village_code%5D=&id=&task=&sort_field=Pwdapplications.id&sort_type=DESC&removeid=&limit=10&page=1&list%5BPwdapplications.application_number%5D="+enrolmentNumber+"&list%5BPwdapplications.full_name%5D=&list%5BPwdapplications.aadhaar_no%5D=&list%5BPwdapplications.gender%5D=";
                         Utility.driver.get(resetSearchURL);
+                        WebElement loader = Utility.getLocator("global-loader", "id");
+                        ((JavascriptExecutor) Utility.driver).executeScript("arguments[0].remove();", loader);
                         WebElement resetOnSearch = Utility.getLocator("//button[@title='Reset']", "xpath");
                         resetOnSearch.click();
                         Thread.sleep(5000);
